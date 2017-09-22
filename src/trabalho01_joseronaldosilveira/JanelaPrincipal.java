@@ -42,7 +42,7 @@ public class JanelaPrincipal extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == btnAbrePedidos){
-                JanelaPedidos janela = new JanelaPedidos(getSampleData());
+                JanelaPedidos janela = new JanelaPedidos(criaMesas(), criaProdutos());
                 janela.setSize(500, 400);
                 janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 janela.setLocationRelativeTo(null);
@@ -58,7 +58,7 @@ public class JanelaPrincipal extends JFrame{
                 janela.setTitle("Cadastro de Mesas");    
             
             }else if(e.getSource() == btnCadastroProduto){
-                JanelaProdutos janela = new JanelaProdutos();
+                JanelaProdutos janela = new JanelaProdutos(criaProdutos());
                 janela.setSize(500, 400);
                 janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 janela.setLocationRelativeTo(null);
@@ -69,11 +69,41 @@ public class JanelaPrincipal extends JFrame{
     }
     
             
-    private static List<Pedido> getSampleData() {
-        //Cria a mesa e o produto
+    private static List<Mesas> criaMesas() {
         Mesas m1 = new Mesas(1, "Mesa 001");
-        Produtos prod1 = new Produtos(1, "Brahma 600ML", 7);        
+        Mesas m2 = new Mesas(2, "Mesa 002");
+        Mesas m3 = new Mesas(3, "Mesa 003");
+        Mesas m4 = new Mesas(4, "Mesa 004");
         
+        List<Mesas> mesas = new ArrayList<>();
+        mesas.add(m1);
+        mesas.add(m2);
+        mesas.add(m3);
+        mesas.add(m4);
+        
+        return mesas;        
+    }
+    
+    private static List<Produtos> criaProdutos() {
+        Produtos prod1 = new Produtos(1, "Brahma 600ML", 7);
+        Produtos prod2 = new Produtos(2, "Heineken 600ML", 10);
+        Produtos prod3 = new Produtos(3, "Skol 600ML", 7);
+        Produtos prod4 = new Produtos(4, "CocaCola 2lt", 9);
+        
+        
+        List<Produtos> prods = new ArrayList<Produtos>();
+        prods.add(prod1);
+        prods.add(prod2);
+        prods.add(prod3);
+        prods.add(prod4);
+        
+        return prods;
+    }
+    
+}
+
+        
+        /*
         //Cria o pedido
         Pedido p1 = new Pedido("00001", "21/09/2017", 70, m1, "Ronaldo");
         
@@ -83,11 +113,6 @@ public class JanelaPrincipal extends JFrame{
         //Adiciona o movimento ao pedido
         p1.getMovimento().add(movi1);
         
-        //cria o array com os pedidos
-        List<Pedido> pedidos = new ArrayList<>();
-        pedidos.add(p1);
+        //cria o array com os pedidos*/
         
-        return pedidos;
-    }
-    
-}
+        
