@@ -61,7 +61,7 @@ public class MoviPedidos {
     
     @Override
     public String toString() {
-        return  codProduto + " - " + quatidade + " - " + vlrUnitario + " - " + vlrTotal;
+        return  numPedido.getNumero() + " - " + codProduto.getDescricao() + " | " + quatidade + " * " + vlrUnitario + " = " + vlrTotal;
     }
     
 }

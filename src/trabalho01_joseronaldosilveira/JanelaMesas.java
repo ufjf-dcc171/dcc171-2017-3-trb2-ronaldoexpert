@@ -58,7 +58,7 @@ public class JanelaMesas extends JFrame {
         pnlTexts.add(btnNovo);
         pnlTexts.add(btnGravar);
         
-        add(painel, BorderLayout.EAST);
+        add(painel, BorderLayout.CENTER);
         add(pnlTexts, BorderLayout.WEST);
         btnGravar.setEnabled(false);
         

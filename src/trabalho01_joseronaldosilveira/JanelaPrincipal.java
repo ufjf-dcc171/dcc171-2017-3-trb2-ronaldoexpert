@@ -14,6 +14,35 @@ public class JanelaPrincipal extends JFrame{
     private final JButton btnAbrePedidos = new JButton("Pedidos");
     private final JButton btnCadastroProduto = new JButton("Produtos");
     private final JButton btnCadastroMesa = new JButton("Mesas");
+    private int i = 0;
+    
+    //Cria as mesas
+    private static Mesas m1 = new Mesas(1, "Mesa 001");
+    private static Mesas m2 = new Mesas(2, "Mesa 002");
+    private static Mesas m3 = new Mesas(3, "Mesa 003");
+    private static Mesas m4 = new Mesas(4, "Mesa 004");
+    
+    //Cria os produtos
+    private static Produtos prod1 = new Produtos(1, "Brahma 600ML", 7);
+    private static Produtos prod2 = new Produtos(2, "Heineken 600ML", 10);
+    private static Produtos prod3 = new Produtos(3, "Skol 600ML", 7);
+    private static Produtos prod4 = new Produtos(4, "CocaCola 2lt", 9);
+    
+    //Cria os pedidos
+    private static Pedido pedido01 = new Pedido("00001", "21/09/2017", 120, m1, "Ronaldo");
+    private static Pedido pedido02 = new Pedido("00002", "22/09/2017", 44, m2, "Ronaldo");
+    private static Pedido pedido03 = new Pedido("00003", "23/09/2017", 100, m3, "Ronaldo");
+    
+    //Cria os Movipedidos
+    private static MoviPedidos movi1 = new MoviPedidos(pedido01, prod1, 10, 7, 70);
+    private static MoviPedidos movi2 = new MoviPedidos(pedido01, prod2, 5, 10, 50); 
+    
+    private static MoviPedidos movi3 = new MoviPedidos(pedido02, prod3, 5, 7, 35); 
+    private static MoviPedidos movi4 = new MoviPedidos(pedido02, prod4, 1, 9, 9); 
+    
+    private static MoviPedidos movi5 = new MoviPedidos(pedido03, prod2, 5, 10, 50); 
+    private static MoviPedidos movi6 = new MoviPedidos(pedido03, prod2, 5, 10, 50); 
+        
     
     public JanelaPrincipal() throws HeadlessException {
         super("Principal");
@@ -42,8 +71,8 @@ public class JanelaPrincipal extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == btnAbrePedidos){
-                JanelaPedidos janela = new JanelaPedidos(criaMesas(), criaProdutos());
-                janela.setSize(500, 400);
+                JanelaPedidos janela = new JanelaPedidos(criaMesas(), criaProdutos(), criaPedido(), criaMoviPedido());
+                janela.setSize(500,700);
                 janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 janela.setLocationRelativeTo(null);
                 janela.setVisible(true);  
@@ -57,7 +86,7 @@ public class JanelaPrincipal extends JFrame{
                 janela.setVisible(true);  
                 janela.setTitle("Cadastro de Mesas");    
             
-            }else if(e.getSource() == btnCadastroProduto){
+            }else if(e.getSource() == btnCadastroProduto){                
                 JanelaProdutos janela = new JanelaProdutos(criaProdutos());
                 janela.setSize(500, 400);
                 janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -70,11 +99,6 @@ public class JanelaPrincipal extends JFrame{
     
             
     private static List<Mesas> criaMesas() {
-        Mesas m1 = new Mesas(1, "Mesa 001");
-        Mesas m2 = new Mesas(2, "Mesa 002");
-        Mesas m3 = new Mesas(3, "Mesa 003");
-        Mesas m4 = new Mesas(4, "Mesa 004");
-        
         List<Mesas> mesas = new ArrayList<>();
         mesas.add(m1);
         mesas.add(m2);
@@ -85,12 +109,6 @@ public class JanelaPrincipal extends JFrame{
     }
     
     private static List<Produtos> criaProdutos() {
-        Produtos prod1 = new Produtos(1, "Brahma 600ML", 7);
-        Produtos prod2 = new Produtos(2, "Heineken 600ML", 10);
-        Produtos prod3 = new Produtos(3, "Skol 600ML", 7);
-        Produtos prod4 = new Produtos(4, "CocaCola 2lt", 9);
-        
-        
         List<Produtos> prods = new ArrayList<Produtos>();
         prods.add(prod1);
         prods.add(prod2);
@@ -98,6 +116,37 @@ public class JanelaPrincipal extends JFrame{
         prods.add(prod4);
         
         return prods;
+    }
+    
+    private static List<Pedido> criaPedido() {
+        List<Pedido> pedidos = new ArrayList<Pedido>();
+        pedidos.add(pedido01);
+        pedidos.add(pedido02);
+        pedidos.add(pedido03);
+        
+        pedido01.getMovimento().add(movi1);
+        pedido01.getMovimento().add(movi2);
+        
+        pedido02.getMovimento().add(movi3);
+        pedido02.getMovimento().add(movi4);
+        
+        pedido03.getMovimento().add(movi5);
+        pedido03.getMovimento().add(movi6);
+        
+        
+        return pedidos;
+    }
+    
+    private static List<MoviPedidos> criaMoviPedido() {
+        List<MoviPedidos> moviPed = new ArrayList<MoviPedidos>();
+        moviPed.add(movi1);
+        moviPed.add(movi2);
+        moviPed.add(movi3);
+        moviPed.add(movi4);
+        moviPed.add(movi5);
+        moviPed.add(movi6);
+        
+        return moviPed;
     }
     
 }

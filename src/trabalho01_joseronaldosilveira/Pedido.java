@@ -76,4 +76,12 @@ public class Pedido {
     public void setIdMesa(Mesas idMesa) {
         this.idMesa = idMesa;
     }
+    
+    public boolean VerificaMesa(Mesas codMesa){
+        if (codMesa.getCodigo() != this.idMesa.getCodigo()){
+            return false;
+        }else{
+            return true;
+        }        
+    }
 }
