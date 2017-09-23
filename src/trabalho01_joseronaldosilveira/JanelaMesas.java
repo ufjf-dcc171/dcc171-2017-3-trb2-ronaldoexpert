@@ -26,7 +26,7 @@ public class JanelaMesas extends JFrame {
     private final JPanel painel = new JPanel();
     private final JPanel pnlTexts = new JPanel();
     
-    private final List<Mesas> mesas = new ArrayList<Mesas>();
+    private final List<Mesas> mesas;
     private final JList<Mesas> lstMesas = new JList<Mesas>(new DefaultListModel<>()); 
     
     private final JTextField txtCodMesa = new JTextField(20);
@@ -37,14 +37,14 @@ public class JanelaMesas extends JFrame {
     private final JButton btnGravar = new JButton("Gravar");
     private String vStatus = "";
     
-    public JanelaMesas() throws HeadlessException {
+    public JanelaMesas(List<Mesas> sampleData) throws HeadlessException {
         super("Mesas");
         
         setLayout(new BorderLayout());
         painel.setLayout(new BorderLayout());
         pnlTexts.setLayout(new GridLayout(11, 1));
         
-        //this.mesas = sampleData; 
+        this.mesas = sampleData; 
         //Le Array e coloca na grid
         lstMesas.setModel(new MesasListModel(mesas));               
         lstMesas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

@@ -50,7 +50,7 @@ public class JanelaPrincipal extends JFrame{
                 janela.setTitle("Pedidos");    
             
             }else if(e.getSource() == btnCadastroMesa){
-                JanelaMesas janela = new JanelaMesas();
+                JanelaMesas janela = new JanelaMesas(criaMesas());
                 janela.setSize(500, 400);
                 janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 janela.setLocationRelativeTo(null);
