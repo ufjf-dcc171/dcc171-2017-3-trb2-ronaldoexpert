@@ -1,8 +1,7 @@
-Aluno: José Ronaldo Silveira Miguel
-Matriucla: 201176016
-Curso: Sistemas de Informação
+Aluno: José Ronaldo Silveira Miguel - 201176016 - Sistemas de Informação
 
 Descrição do sistema:
+
 O sistema será desenvolvido para que possa controlar o fluxo nas mesas.
 Mesas e produtos deverão ser previamente cadastrados.
 O atendente irá abrir uma mesa, colocando a data, o nome do responsavel pela mesa assim como 1 produto;
