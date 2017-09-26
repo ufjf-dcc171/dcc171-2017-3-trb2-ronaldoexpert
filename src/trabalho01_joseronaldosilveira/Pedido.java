@@ -84,4 +84,8 @@ public class Pedido {
             return true;
         }        
     }
+
+    void setTotal(float vlrTotal) {
+        this.total= vlrTotal;
+    }
 }

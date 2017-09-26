@@ -1,6 +1,7 @@
 package trabalho01_joseronaldosilveira;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
@@ -17,9 +18,11 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ListDataListener;
 
 public class JanelaMesas extends JFrame {
@@ -51,6 +54,22 @@ public class JanelaMesas extends JFrame {
         
         painel.add(new JScrollPane(lstMesas));         
 
+        
+        //cria uma tabela
+        /*JTable table = new JTable();
+        table.setModel(new MinhaTabelaModel(mesas));
+        table.setBorder(new LineBorder(Color.black));
+        table.setGridColor(Color.black);
+        table.setShowGrid(true);
+
+        //cria um scroll  caso seja um volume grande de dados.
+        JScrollPane scroll = new JScrollPane(); 
+        scroll.getViewport().setBorder(null);
+        scroll.getViewport().add(table); 
+        scroll.setSize(450, 450);
+        
+        painel.add(scroll);*/
+        
         pnlTexts.add(lblCodMesa);
         pnlTexts.add(txtCodMesa);
         pnlTexts.add(lblDescMesa);

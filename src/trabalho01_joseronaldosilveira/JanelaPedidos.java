@@ -32,8 +32,9 @@ public class JanelaPedidos extends JFrame{
     private final List<Pedido> pedidos;
     private final JList<Pedido> lstPedidos = new JList<Pedido>(new DefaultListModel<>());
     
-    private final List<MoviPedidos> moviPedidos;
+    private List<MoviPedidos> moviPedidos;
     private final JList<MoviPedidos> lstMoviPedidos = new JList<MoviPedidos>(new DefaultListModel<>());
+    
     
     private final JPanel pnlDireita = new JPanel();
     private final JPanel pnlEsquerda = new JPanel();
@@ -44,6 +45,8 @@ public class JanelaPedidos extends JFrame{
     
     private final JButton btnNovo = new JButton("Novo");
     private final JButton btnGravar = new JButton("Gravar");
+    private final JButton btnCancelar = new JButton("Cancelar");
+    
     private JComboBox cboMesas = new JComboBox(); 
     
     private final JTextField txtCodProduto = new JTextField();
@@ -58,7 +61,11 @@ public class JanelaPedidos extends JFrame{
     
     private final JButton btnAdd = new JButton("ADD");
     private final JButton btnExcluir = new JButton("Excluir");
+    private final JButton btnFecharMesa = new JButton("Fechar Mesa");
+    
     private boolean achouMesa = false;
+    private boolean vNovoPedido = false;
+    private boolean vNovoProduto = false;
     
     public JanelaPedidos(List<Mesas> mesas, List<Produtos> produtos, List<Pedido> pedidos, List<MoviPedidos> moviPedidos) {
         super("Pedidos");
@@ -91,17 +98,7 @@ public class JanelaPedidos extends JFrame{
         this.moviPedidos = null;
         
         //Preenche combobox com as mesas vazias
-        for(int i = 0; i < mesas.size(); i++){
-            for(int j = 0; j < pedidos.size(); j++){
-                if (pedidos.get(i).VerificaMesa(mesas.get(i))){
-                    achouMesa = true;
-                }    
-            } 
-            if (achouMesa == false){
-                cboMesas.addItem(mesas.get(i).getDescricao());
-            }
-            achouMesa = false;
-        }
+        preencheComboBox();
         
         //Componentes
             txtCodProduto.setEnabled(false);
@@ -119,19 +116,20 @@ public class JanelaPedidos extends JFrame{
             pnlComponentes.add(txtTotal);
             
             pnlBotoesProduto.add(btnAdd);
-            pnlBotoesProduto.add(btnExcluir);
+            pnlBotoesProduto.add(btnExcluir);            
+            pnlBotoesProduto.add(btnFecharMesa);            
             
             pnlComponentes.add(pnlBotoesProduto);
         //
         
-        pnlDireita.add(pnlComponentes, BorderLayout.NORTH);
-        pnlDireita.add(new JScrollPane(lstProdutos), BorderLayout.CENTER);
+        pnlDireita.add(pnlComponentes, BorderLayout.CENTER);
+        pnlDireita.add(new JScrollPane(lstProdutos), BorderLayout.NORTH);
         pnlDireita.add(new JScrollPane(lstMoviPedidos), BorderLayout.SOUTH);
         pnlEsquerda.add(new JScrollPane(lstPedidos));  
         
         pnlBotoes.add(btnNovo);
         pnlBotoes.add(btnGravar);
-        
+        pnlBotoes.add(btnCancelar);
         
         pnlPrincipal.add(pnlDireita, BorderLayout.CENTER);
         pnlPrincipal.add(pnlEsquerda, BorderLayout.WEST);
@@ -143,17 +141,21 @@ public class JanelaPedidos extends JFrame{
         //Funcionamento dos botões
         btnNovo.addActionListener(new onClickBotao());
         btnGravar.addActionListener(new onClickBotao());
+        btnCancelar.addActionListener(new onClickBotao());
+        btnAdd.addActionListener(new onClickBotao());
+        btnExcluir.addActionListener(new onClickBotao());
         
         //Double click na lista de pedidos em aberto
         lstPedidos.addMouseListener(new MouseAdapter() {
         @Override
             public void mouseClicked(MouseEvent evt) {
                 if (evt.getClickCount() == 2){
-                    Pedido mesaSelected = lstPedidos.getSelectedValue();                    
-                    lstMoviPedidos.setModel(new MoviPedidosListModel(mesaSelected.getMovimento())); 
+                    Pedido pedidoSelected = lstPedidos.getSelectedValue();                    
+                    lstMoviPedidos.setModel(new MoviPedidosListModel(pedidoSelected.getMovimento())); 
                     cboMesas.setEnabled(false); 
+                    lstPedidos.setEnabled(false);
                 }
-             }
+             } 
          });
 
         //Double click na lista de produtos
@@ -169,6 +171,25 @@ public class JanelaPedidos extends JFrame{
                     txtQuantidade.setText("");
                     txtTotal.setText("");
                     txtQuantidade.grabFocus();
+                    vNovoProduto = true;
+                }
+             }
+         });
+        
+        //Double click na lista de movimento do pedido
+        lstMoviPedidos.addMouseListener(new MouseAdapter() {
+        @Override
+            public void mouseClicked(MouseEvent evt) {
+                if (evt.getClickCount() == 2){
+                    MoviPedidos produtoSelected = lstMoviPedidos.getSelectedValue();                    
+                    txtCodProduto.setText(produtoSelected.getCodProduto() + ""); 
+                    txtProduto.setText(produtoSelected.getCodProduto().getDescricao()); 
+                    txtVlrUnit.setText(produtoSelected.getVlrUnitario() + ""); 
+                    txtQuantidade.setText(produtoSelected.getQuatidade() + "");
+                    txtTotal.setText(produtoSelected.getVlrTotal() + ""); 
+                    txtQuantidade.grabFocus();
+                    vNovoProduto = false;
+                    //lstMoviPedidos.setEnabled(false); 
                 }
              }
          }); 
@@ -187,11 +208,151 @@ public class JanelaPedidos extends JFrame{
     private class onClickBotao implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {  
-            if(e.getSource()==btnNovo){
+            float vlrTotal = 0;
+            String idPedido = "";
+            
+            if(e.getSource() == btnNovo){     //Novo pedido                 
                 cboMesas.setEnabled(true); 
-            }else if(e.getSource()==btnGravar){                
-                               
+                btnNovo.setEnabled(false);
+                lstPedidos.setEnabled(false);
+                vNovoPedido = true;
+                txtProduto.grabFocus();
+                
+                Pedido p = new Pedido();
+                for (int i = 0; i < pedidos.size(); i++){
+                    idPedido = pedidos.get(i).getNumero();
+                }                  
+                idPedido = Integer.parseInt(idPedido) + 1 + "";
+
+                for (int j = 0; j < mesas.size(); j++){
+                    if (mesas.get(j).getDescricao() == cboMesas.getSelectedItem().toString()){
+                        p.setIdMesa(mesas.get(j));
+                    }
+                }                    
+
+                p.setData("25/09/2017");
+                p.setNumero(idPedido);
+                p.setResponsavel("Ronaldo S");
+                p.setTotal(0);
+                pedidos.add(p);
+                
+            }else if(e.getSource() == btnGravar){     //Grava o pedido inteiro
+                btnNovo.setEnabled(true);
+                lstPedidos.setEnabled(true);
+                
+                if (vNovoPedido == false){
+                    Pedido pedidoMovi = lstPedidos.getSelectedValue();                
+                    for(int i = 0; i < pedidoMovi.getMovimento().size(); i++){
+                        vlrTotal = vlrTotal + pedidoMovi.getMovimento().get(i).getVlrTotal();
+                    }
+                    pedidoMovi.setTotal(vlrTotal);                      
+                }else{                    
+                    preencheComboBox();
+                }
+                
+                lstPedidos.updateUI();
+                lstMoviPedidos.setModel(new DefaultListModel());
+                
+            }else if(e.getSource()==btnCancelar){ 
+                LimpaProdutos();
+                btnNovo.setEnabled(true);
+                lstPedidos.setEnabled(true);  
+                lstMoviPedidos.setModel(new DefaultListModel());
+            
+            }else if(e.getSource() == btnAdd){        //insere ou altera um produto
+               if (ValidaCampos()){
+                    if (vNovoProduto == false){
+                        //Se estiver editando um pedido
+                        MoviPedidos moviSelected = lstMoviPedidos.getSelectedValue();
+                        moviSelected.setQuatidade(Integer.parseInt(txtQuantidade.getText()));
+                        moviSelected.setVlrUnitario(Float.parseFloat(txtVlrUnit.getText()));
+                        moviSelected.setVlrTotal(Float.parseFloat(txtQuantidade.getText()) * (Float.parseFloat(txtVlrUnit.getText())));
+                    }else{
+                        //inserirItem(pedidos.get(3));   
+                        MoviPedidos mp = new MoviPedidos();
+                        mp.setCodProduto(lstProdutos.getSelectedValue());
+                        mp.setNumPedido(lstPedidos.getSelectedValue()); 
+                        mp.setQuatidade(Integer.parseInt(txtQuantidade.getText()));
+                        mp.setVlrUnitario(Float.parseFloat(txtVlrUnit.getText()));
+                        mp.setVlrTotal(Float.parseFloat(txtQuantidade.getText()) * (Float.parseFloat(txtVlrUnit.getText())));
+                        
+                        moviPedidos.add(mp);
+                    }
+                    
+                    lstMoviPedidos.updateUI();
+                    lstMoviPedidos.setEnabled(true);
+                    LimpaProdutos();    
+               }
+            
+            }else if(e.getSource() == btnExcluir){ 
+                if (!lstMoviPedidos.isEnabled() == false){ 
+                    moviPedidos.remove(lstMoviPedidos.getSelectedValue());
+                    lstMoviPedidos.updateUI();
+                    //lstMoviPedidos.setEnabled(true);
+                    LimpaProdutos();      
+                }                
             }                
+        }
+    }
+    
+    private void LimpaProdutos(){
+        txtCodProduto.setText("");
+        txtProduto.setText("");
+        txtVlrUnit.setText("");
+        txtQuantidade.setText("");
+        txtTotal.setText("");
+    }
+    
+    private boolean ValidaCampos(){
+        boolean retorno = true;
+        float vTotal = 0;
+        if (txtCodProduto.getText() == ""){
+            retorno = false;
+        }
+        if (txtQuantidade.getText() == ""){
+            retorno = false;
+        }
+        if (txtVlrUnit.getText() == ""){
+            retorno = false;
+        }
+        if (txtTotal.getText() == ""){
+            retorno = false;
+        }
+        
+        vTotal = Float.parseFloat(txtQuantidade.getText()) * Float.parseFloat(txtVlrUnit.getText());
+        
+        if (vTotal != Float.parseFloat(txtTotal.getText())){
+            retorno = false;
+        }
+        return retorno;
+    }   
+    
+    public void inserirItem(Pedido p){
+        MoviPedidos moviPedido = new MoviPedidos();
+        moviPedido.setNumPedido(p);
+        moviPedido.setCodProduto(lstProdutos.getSelectedValue());
+        moviPedido.setQuatidade(Integer.parseInt(txtQuantidade.getText()));    
+        moviPedido.setVlrUnitario(Float.parseFloat(txtVlrUnit.getText()));    
+        moviPedido.setVlrTotal(Float.parseFloat(txtTotal.getText()));
+        
+        p.getMovimento().add(moviPedido);
+        moviPedidos.add(moviPedido);        
+        
+        lstMoviPedidos.setModel(new MoviPedidosListModel(p.getMovimento())); 
+    } 
+    
+    private void preencheComboBox(){
+        cboMesas.removeAllItems();
+        for(int i = 0; i < mesas.size(); i++){
+            for(int j = 0; j < pedidos.size(); j++){
+                if (pedidos.get(j).VerificaMesa(mesas.get(i))){
+                    achouMesa = true;
+                }    
+            } 
+            if (achouMesa == false){
+                cboMesas.addItem(mesas.get(i).getDescricao());
+            }
+            achouMesa = false;
         }
     }
     

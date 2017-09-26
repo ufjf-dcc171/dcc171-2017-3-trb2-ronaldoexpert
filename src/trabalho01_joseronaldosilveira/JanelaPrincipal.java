@@ -21,6 +21,7 @@ public class JanelaPrincipal extends JFrame{
     private static Mesas m2 = new Mesas(2, "Mesa 002");
     private static Mesas m3 = new Mesas(3, "Mesa 003");
     private static Mesas m4 = new Mesas(4, "Mesa 004");
+    private static Mesas m5 = new Mesas(5, "Mesa 005");
     
     //Cria os produtos
     private static Produtos prod1 = new Produtos(1, "Brahma 600ML", 7);
@@ -104,6 +105,7 @@ public class JanelaPrincipal extends JFrame{
         mesas.add(m2);
         mesas.add(m3);
         mesas.add(m4);
+        mesas.add(m5);
         
         return mesas;        
     }
