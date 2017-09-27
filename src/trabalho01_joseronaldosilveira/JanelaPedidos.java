@@ -7,10 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -269,6 +266,7 @@ public class JanelaPedidos extends JFrame{
                         moviSelected.setVlrTotal(Float.parseFloat(txtQuantidade.getText()) * (Float.parseFloat(txtVlrUnit.getText())));
                     }else{
                         //inserirItem(pedidos.get(3));   
+                        Pedido pedidoSelected = lstPedidos.getSelectedValue();
                         MoviPedidos mp = new MoviPedidos();
                         mp.setCodProduto(lstProdutos.getSelectedValue());
                         mp.setNumPedido(lstPedidos.getSelectedValue()); 
@@ -276,7 +274,7 @@ public class JanelaPedidos extends JFrame{
                         mp.setVlrUnitario(Float.parseFloat(txtVlrUnit.getText()));
                         mp.setVlrTotal(Float.parseFloat(txtQuantidade.getText()) * (Float.parseFloat(txtVlrUnit.getText())));
                         
-                        moviPedidos.add(mp);
+                        pedidoSelected.getMovimento().add(mp);
                     }
                     
                     lstMoviPedidos.updateUI();
@@ -286,9 +284,9 @@ public class JanelaPedidos extends JFrame{
             
             }else if(e.getSource() == btnExcluir){ 
                 if (!lstMoviPedidos.isEnabled() == false){ 
-                    moviPedidos.remove(lstMoviPedidos.getSelectedValue());
+                    Pedido pedidoSelected = lstPedidos.getSelectedValue();
+                    pedidoSelected.getMovimento().remove(lstMoviPedidos.getSelectedValue());
                     lstMoviPedidos.updateUI();
-                    //lstMoviPedidos.setEnabled(true);
                     LimpaProdutos();      
                 }                
             }                
