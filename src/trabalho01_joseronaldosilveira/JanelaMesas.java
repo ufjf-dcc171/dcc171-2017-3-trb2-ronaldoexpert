@@ -31,6 +31,7 @@ public class JanelaMesas extends JFrame {
     private final JLabel lblDescMesa = new JLabel("Descrição");
     private final JButton btnNovo = new JButton("Novo");
     private final JButton btnGravar = new JButton("Gravar");
+    private final JButton btnExcluir = new JButton("Excluir");
     private String vStatus = "";
     
     public JanelaMesas(List<Mesas> sampleData) throws HeadlessException {
@@ -53,6 +54,7 @@ public class JanelaMesas extends JFrame {
         pnlTexts.add(txtDescMesa);
         pnlTexts.add(btnNovo);
         pnlTexts.add(btnGravar);
+        pnlTexts.add(btnExcluir);
         
         add(painel, BorderLayout.CENTER);
         add(pnlTexts, BorderLayout.WEST);

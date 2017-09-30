@@ -2,7 +2,6 @@ package trabalho01_joseronaldosilveira;
 
 
 public class MoviPedidos {
-    private Pedido numPedido;
     private Produtos codProduto;
     private int quatidade;
     private float vlrUnitario;
@@ -11,20 +10,11 @@ public class MoviPedidos {
     public MoviPedidos() {
     }
 
-    public MoviPedidos(Pedido numPedido, Produtos codProduto, int quatidade, float vlrUnitario, float vlrTotal) {
-        this.numPedido = numPedido;
+    public MoviPedidos(Produtos codProduto, int quatidade, float vlrUnitario, float vlrTotal) {
         this.codProduto = codProduto;
         this.quatidade = quatidade;
         this.vlrUnitario = vlrUnitario;
         this.vlrTotal = vlrTotal;
-    }
-
-    public Pedido getNumPedido() {
-        return numPedido;
-    }
-
-    public void setNumPedido(Pedido numPedido) {
-        this.numPedido = numPedido;
     }
 
     public Produtos getCodProduto() {
@@ -61,7 +51,7 @@ public class MoviPedidos {
     
     @Override
     public String toString() {
-        return  numPedido.getNumero() + " - " + codProduto.getDescricao() + " | " + quatidade + " * " + vlrUnitario + " = " + vlrTotal;
+        return  codProduto.getDescricao() + " | " + quatidade + " * " + vlrUnitario + " = " + vlrTotal;
     }
     
 }

@@ -30,19 +30,14 @@ public class JanelaPrincipal extends JFrame{
     private static Produtos prod4 = new Produtos(4, "CocaCola 2lt", 9);
     
     //Cria os pedidos
-    private static Pedido pedido01 = new Pedido("00001", "21/09/2017", 120, m1, "Ronaldo");
-    private static Pedido pedido02 = new Pedido("00002", "22/09/2017", 44, m2, "Ronaldo");
-    private static Pedido pedido03 = new Pedido("00003", "23/09/2017", 100, m3, "Ronaldo");
+    private static Pedido pedido01 = new Pedido("00001", "21/09/2017", 70, m1, "Ronaldo");
+    private static Pedido pedido02 = new Pedido("00002", "22/09/2017", 35, m2, "Ronaldo");
+    private static Pedido pedido03 = new Pedido("00003", "23/09/2017", 50, m3, "Ronaldo");
     
     //Cria os Movipedidos
-    private static MoviPedidos movi1 = new MoviPedidos(pedido01, prod1, 10, 7, 70);
-    private static MoviPedidos movi2 = new MoviPedidos(pedido01, prod2, 5, 10, 50); 
-    
-    private static MoviPedidos movi3 = new MoviPedidos(pedido02, prod3, 5, 7, 35); 
-    private static MoviPedidos movi4 = new MoviPedidos(pedido02, prod4, 1, 9, 9); 
-    
-    private static MoviPedidos movi5 = new MoviPedidos(pedido03, prod2, 5, 10, 50); 
-    private static MoviPedidos movi6 = new MoviPedidos(pedido03, prod2, 5, 10, 50); 
+    private static MoviPedidos movi1 = new MoviPedidos(prod1, 10, 7, 70);    
+    private static MoviPedidos movi3 = new MoviPedidos(prod3, 5, 7, 35);   
+    private static MoviPedidos movi5 = new MoviPedidos(prod2, 5, 10, 50); 
         
     
     public JanelaPrincipal() throws HeadlessException {
@@ -127,13 +122,10 @@ public class JanelaPrincipal extends JFrame{
         pedidos.add(pedido03);
         
         pedido01.getMovimento().add(movi1);
-        pedido01.getMovimento().add(movi2);
         
         pedido02.getMovimento().add(movi3);
-        pedido02.getMovimento().add(movi4);
         
         pedido03.getMovimento().add(movi5);
-        pedido03.getMovimento().add(movi6);
         
         
         return pedidos;
@@ -142,11 +134,8 @@ public class JanelaPrincipal extends JFrame{
     private static List<MoviPedidos> criaMoviPedido() {
         List<MoviPedidos> moviPed = new ArrayList<MoviPedidos>();
         moviPed.add(movi1);
-        moviPed.add(movi2);
         moviPed.add(movi3);
-        moviPed.add(movi4);
         moviPed.add(movi5);
-        moviPed.add(movi6);
         
         return moviPed;
     }

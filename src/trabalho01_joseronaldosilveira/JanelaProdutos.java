@@ -32,6 +32,7 @@ public class JanelaProdutos extends JFrame{
     private final JLabel lblVlrUnitario = new JLabel("Vlr. Unitário");
     private final JButton btnNovo = new JButton("Novo");
     private final JButton btnGravar = new JButton("Gravar");
+    private final JButton btnExcluir = new JButton("Excluir");
     private String vStatus = "";    
     
     
@@ -56,6 +57,7 @@ public class JanelaProdutos extends JFrame{
         
         pnlTexts.add(btnNovo);
         pnlTexts.add(btnGravar);
+        pnlTexts.add(btnExcluir);
         
         add(painel, BorderLayout.CENTER);
         add(pnlTexts, BorderLayout.WEST);

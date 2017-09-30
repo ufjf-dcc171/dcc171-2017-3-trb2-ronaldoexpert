@@ -35,9 +35,10 @@ public class JanelaPedidos extends JFrame{
     private final List<Pedido> pedidos;
     private final JList<Pedido> lstPedidos = new JList<Pedido>(new DefaultListModel<>());
     
-    private List<MoviPedidos> moviPedidos;
+    private final List<MoviPedidos> moviPedidos;
     private final JList<MoviPedidos> lstMoviPedidos = new JList<MoviPedidos>(new DefaultListModel<>());
-
+    private final List<MoviPedidos> lstMovi = new ArrayList<MoviPedidos>();
+    
     private final JList<HistoricoDiario> lstHistorico = new JList<HistoricoDiario>(new DefaultListModel<>());
 
     
@@ -63,6 +64,8 @@ public class JanelaPedidos extends JFrame{
     private final JLabel lblQuantidade = new JLabel("Quantidade");    
     private final JTextField txtTotal = new JTextField();
     private final JLabel lblTotal = new JLabel("Total");
+    private final JTextField txtResponsavel = new JTextField();
+    private final JLabel lblResponsavel = new JLabel("Responsável");
     
     private final JButton btnAdd = new JButton("ADD");
     private final JButton btnExcluir = new JButton("Excluir");
@@ -81,7 +84,7 @@ public class JanelaPedidos extends JFrame{
         pnlEsquerda.setLayout(new GridLayout(1, 1));
         pnlPrincipal.setLayout(new BorderLayout());
         pnlBotoes.setLayout(new GridLayout(1, 2));
-        pnlComponentes.setLayout(new GridLayout(11, 1));
+        pnlComponentes.setLayout(new GridLayout(12, 1));
         pnlBotoes.setLayout(new GridLayout(1, 2));
         
         //Passa os dados para a lista e defina o modelo para as listas com o conjunto de dados
@@ -111,7 +114,8 @@ public class JanelaPedidos extends JFrame{
             btnFecharMesa.setEnabled(false); 
             pnlComponentes.add(cboMesas);
             
-            pnlComponentes.add(txtCodProduto);
+            pnlComponentes.add(lblResponsavel);
+            pnlComponentes.add(txtResponsavel);
             pnlComponentes.add(lblProduto);
             pnlComponentes.add(txtProduto);
             pnlComponentes.add(lblVlrUnit);
@@ -120,6 +124,7 @@ public class JanelaPedidos extends JFrame{
             pnlComponentes.add(txtQuantidade);
             pnlComponentes.add(lblTotal);
             pnlComponentes.add(txtTotal);
+            
             
             pnlBotoesProduto.add(btnAdd);
             pnlBotoesProduto.add(btnExcluir);            
@@ -160,7 +165,8 @@ public class JanelaPedidos extends JFrame{
                     Pedido pedidoSelected = lstPedidos.getSelectedValue();                    
                     if(pedidoSelected.getMovimento() != null){
                         lstMoviPedidos.setModel(new MoviPedidosListModel(pedidoSelected.getMovimento()));
-                    }                     
+                    }            
+                    txtResponsavel.setText(pedidoSelected.getResponsavel()); 
                     cboMesas.setEnabled(false); 
                     lstPedidos.setEnabled(false);
                     btnFecharMesa.setEnabled(true);
@@ -213,6 +219,30 @@ public class JanelaPedidos extends JFrame{
                 }                
             }
         });
+        
+        //Enter no codigo do produto
+        txtProduto.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int codProduto = 0;
+                if (!txtProduto.getText().isEmpty()){
+                    codProduto = Integer.parseInt(txtProduto.getText());
+                    for (int i = 0; i < produtos.size(); i++){
+                        if (codProduto == produtos.get(i).getCodigo()) {
+                            txtCodProduto.setText(codProduto + ""); 
+                            txtProduto.setText(produtos.get(i).getDescricao()); 
+                            txtVlrUnit.setText(produtos.get(i).getVlrUunitario()+ ""); 
+                                
+                            txtQuantidade.setText("");
+                            txtTotal.setText("");
+                            txtQuantidade.grabFocus();
+                            lstProdutos.setSelectedIndex(i); 
+                            vNovoProduto = true;
+                        }
+                    }
+                }                
+            }
+        });
     }
     
     private class onClickBotao implements ActionListener{
@@ -244,28 +274,33 @@ public class JanelaPedidos extends JFrame{
 
                 p.setData("25/09/2017");
                 p.setNumero(idPedido);
-                p.setResponsavel("Ronaldo S");
+                p.setResponsavel(txtResponsavel.getText());
                 p.setTotal(0);
                 pedidos.add(p);
                 lstPedidos.updateUI();
-                lstPedidos.setSelectedIndex(count); 
+                lstPedidos.setSelectedIndex(count);
+                txtResponsavel.grabFocus();
                 
             }else if(e.getSource() == btnGravar){     //Grava o pedido inteiro
                 btnNovo.setEnabled(true);
                 lstPedidos.setEnabled(true);
                 
-                if (vNovoPedido == false){
-                    Pedido pedidoMovi = lstPedidos.getSelectedValue();                
-                    for(int i = 0; i < pedidoMovi.getMovimento().size(); i++){
-                        vlrTotal = vlrTotal + pedidoMovi.getMovimento().get(i).getVlrTotal();
-                    }
-                    pedidoMovi.setTotal(vlrTotal);                      
-                }else{                    
+                Pedido pedidoMovi = lstPedidos.getSelectedValue();                
+                for(int i = 0; i < pedidoMovi.getMovimento().size(); i++){
+                    vlrTotal = vlrTotal + pedidoMovi.getMovimento().get(i).getVlrTotal();
+                }
+                pedidoMovi.setTotal(vlrTotal);
+                pedidoMovi.setResponsavel(txtResponsavel.getText());
+                
+                if (vNovoPedido == true){                                     
                     preencheComboBox();
                 }
                 
                 lstPedidos.updateUI();
+                lstPedidos.clearSelection(); 
                 lstMoviPedidos.setModel(new DefaultListModel());
+                vNovoPedido = false;
+                txtResponsavel.setText(""); 
                 
             }else if(e.getSource()==btnCancelar){ 
                 if(vNovoPedido == true){
@@ -279,9 +314,11 @@ public class JanelaPedidos extends JFrame{
                 btnNovo.setEnabled(true);
                 lstPedidos.setEnabled(true);  
                 lstMoviPedidos.setModel(new DefaultListModel());
+                vNovoPedido = false;
             
             }else if(e.getSource() == btnAdd){        //insere ou altera um produto
                Pedido pedidoSelected = lstPedidos.getSelectedValue();
+               float vTotal = 0;
                 if (ValidaCampos()){
                     if (vNovoProduto == false){
                         //Se estiver editando um pedido
@@ -289,21 +326,15 @@ public class JanelaPedidos extends JFrame{
                         moviSelected.setQuatidade(Integer.parseInt(txtQuantidade.getText()));
                         moviSelected.setVlrUnitario(Float.parseFloat(txtVlrUnit.getText()));
                         moviSelected.setVlrTotal(Float.parseFloat(txtQuantidade.getText()) * (Float.parseFloat(txtVlrUnit.getText())));
-                    }else{
-                        MoviPedidos mp = new MoviPedidos();
-                        mp.setCodProduto(lstProdutos.getSelectedValue());
-                        mp.setNumPedido(lstPedidos.getSelectedValue()); 
-                        mp.setQuatidade(Integer.parseInt(txtQuantidade.getText()));
-                        mp.setVlrUnitario(Float.parseFloat(txtVlrUnit.getText()));
-                        mp.setVlrTotal(Float.parseFloat(txtQuantidade.getText()) * (Float.parseFloat(txtVlrUnit.getText())));
-                        
-                        if (vNovoPedido == true){
-                            //List<MoviPedidos> listMoviPed = null;
-                            //listMoviPed.add(mp);
-                            //pedidoSelected.setMovimento(listMoviPed);
-                            //moviPedidos.add(mp);
-                        }                        
-                        pedidoSelected.getMovimento().add(mp);
+                    }else{                        
+                        vTotal = Float.parseFloat(txtQuantidade.getText()) * (Float.parseFloat(txtVlrUnit.getText()));
+                        MoviPedidos mp = new MoviPedidos(lstProdutos.getSelectedValue(), Integer.parseInt(txtQuantidade.getText()), Float.parseFloat(txtVlrUnit.getText()), vTotal);
+                        if (vNovoPedido == true){                            
+                            lstMovi.add(mp);
+                            pedidoSelected.setMovimento(lstMovi);
+                        }else{
+                            pedidoSelected.getMovimento().add(mp);
+                        }
                     }
                     
                     lstMoviPedidos.setModel(new MoviPedidosListModel(pedidoSelected.getMovimento()));
@@ -335,18 +366,18 @@ public class JanelaPedidos extends JFrame{
                         Pedido pedidoSelected = lstPedidos.getSelectedValue();
                         JanelaFechaMesa janela = new JanelaFechaMesa(pedidoSelected.getMovimento(), Integer.parseInt(qtdPessoas));
                         
-                        lstMoviPedidos.setModel(new DefaultListModel());
-                        pedidos.remove(pedidoSelected);
-                        lstPedidos.updateUI();
-                        lstPedidos.setEnabled(true);
-                        cboMesas.setEnabled(true);
-                        preencheComboBox();
-                        
                         janela.setSize(250,300);
                         janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                         janela.setLocationRelativeTo(null); 
                         janela.setVisible(true);  
                         janela.setTitle("Mesa Fechada");
+                        pedidos.remove(pedidoSelected); 
+                        lstPedidos.updateUI();
+                        lstPedidos.setEnabled(true);
+                        cboMesas.setEnabled(true);
+                        preencheComboBox();
+                        
+                        lstMoviPedidos.setModel(new DefaultListModel());
                     }
                 }
             }                
