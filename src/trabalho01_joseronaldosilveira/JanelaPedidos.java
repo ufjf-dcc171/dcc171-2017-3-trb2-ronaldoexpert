@@ -2,6 +2,7 @@
 package trabalho01_joseronaldosilveira;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,6 +39,7 @@ public class JanelaPedidos extends JFrame{
     private final List<MoviPedidos> moviPedidos;
     private final JList<MoviPedidos> lstMoviPedidos = new JList<MoviPedidos>(new DefaultListModel<>());
     private final List<MoviPedidos> lstMovi = new ArrayList<MoviPedidos>();
+    private final List<MoviPedidos> lstMoviFechaMesa = new ArrayList<MoviPedidos>();
     
     private final JList<HistoricoDiario> lstHistorico = new JList<HistoricoDiario>(new DefaultListModel<>());
 
@@ -48,6 +50,7 @@ public class JanelaPedidos extends JFrame{
     private final JPanel pnlBotoes = new JPanel();
     private final JPanel pnlComponentes = new JPanel(); 
     private final JPanel pnlBotoesProduto = new JPanel(); 
+    private final JPanel pnlDiretaBaixo = new JPanel(); 
     
     private final JButton btnNovo = new JButton("Novo");
     private final JButton btnGravar = new JButton("Gravar");
@@ -66,6 +69,8 @@ public class JanelaPedidos extends JFrame{
     private final JLabel lblTotal = new JLabel("Total");
     private final JTextField txtResponsavel = new JTextField();
     private final JLabel lblResponsavel = new JLabel("Responsável");
+    private final JTextField txtTotalMesa = new JTextField();
+    private final JLabel lblTotalMesa = new JLabel("Total Mesa:");
     
     private final JButton btnAdd = new JButton("ADD");
     private final JButton btnExcluir = new JButton("Excluir");
@@ -86,6 +91,7 @@ public class JanelaPedidos extends JFrame{
         pnlBotoes.setLayout(new GridLayout(1, 2));
         pnlComponentes.setLayout(new GridLayout(12, 1));
         pnlBotoes.setLayout(new GridLayout(1, 2));
+        pnlDiretaBaixo.setLayout(new BorderLayout());
         
         //Passa os dados para a lista e defina o modelo para as listas com o conjunto de dados
         this.mesas = mesas;
@@ -112,6 +118,9 @@ public class JanelaPedidos extends JFrame{
             txtCodProduto.setEnabled(false);
             txtTotal.setEnabled(false); 
             btnFecharMesa.setEnabled(false); 
+            txtTotalMesa.setFont(new Font("Times New Roman", Font.BOLD, 22));  
+            txtTotalMesa.setEditable(false);
+            txtTotalMesa.setText("R$ 0,00");
             pnlComponentes.add(cboMesas);
             
             pnlComponentes.add(lblResponsavel);
@@ -135,7 +144,12 @@ public class JanelaPedidos extends JFrame{
         
         pnlDireita.add(pnlComponentes, BorderLayout.CENTER);
         pnlDireita.add(new JScrollPane(lstProdutos), BorderLayout.NORTH);
-        pnlDireita.add(new JScrollPane(lstMoviPedidos), BorderLayout.SOUTH);
+        
+        pnlDiretaBaixo.add(new JScrollPane(lstMoviPedidos), BorderLayout.NORTH);
+        pnlDiretaBaixo.add(lblTotalMesa, BorderLayout.CENTER);
+        pnlDiretaBaixo.add(txtTotalMesa, BorderLayout.SOUTH);
+        
+        pnlDireita.add(pnlDiretaBaixo, BorderLayout.SOUTH);
         pnlEsquerda.add(new JScrollPane(lstPedidos));  
         
         pnlBotoes.add(btnNovo);
@@ -170,6 +184,8 @@ public class JanelaPedidos extends JFrame{
                     cboMesas.setEnabled(false); 
                     lstPedidos.setEnabled(false);
                     btnFecharMesa.setEnabled(true);
+                    
+                    txtTotalMesa.setText("R$ " + CalculaTotalMesa());
                 }
              } 
          });
@@ -249,6 +265,7 @@ public class JanelaPedidos extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e) {  
             float vlrTotal = 0;
+            float vlrTotalMesa = 0;
             String idPedido = "";
             int count = 0;
             
@@ -301,6 +318,7 @@ public class JanelaPedidos extends JFrame{
                 lstMoviPedidos.setModel(new DefaultListModel());
                 vNovoPedido = false;
                 txtResponsavel.setText(""); 
+                txtTotalMesa.setText("R$ " + CalculaTotalMesa());
                 
             }else if(e.getSource()==btnCancelar){ 
                 if(vNovoPedido == true){
@@ -337,6 +355,8 @@ public class JanelaPedidos extends JFrame{
                         }
                     }
                     
+                    txtTotalMesa.setText("R$ " + CalculaTotalMesa());
+                
                     lstMoviPedidos.setModel(new MoviPedidosListModel(pedidoSelected.getMovimento()));
                     lstMoviPedidos.updateUI();
                     lstMoviPedidos.setEnabled(true);
@@ -347,7 +367,10 @@ public class JanelaPedidos extends JFrame{
                 if (!lstMoviPedidos.isEnabled() == false){ 
                     Pedido pedidoSelected = lstPedidos.getSelectedValue();
                     pedidoSelected.getMovimento().remove(lstMoviPedidos.getSelectedValue());
-                    lstMoviPedidos.updateUI();
+                    lstMoviPedidos.updateUI();                   
+                    
+                    txtTotalMesa.setText("R$ " + CalculaTotalMesa());
+                    
                     LimpaProdutos();      
                 }                
                 
@@ -364,7 +387,17 @@ public class JanelaPedidos extends JFrame{
                         
                         LimpaProdutos();
                         Pedido pedidoSelected = lstPedidos.getSelectedValue();
-                        JanelaFechaMesa janela = new JanelaFechaMesa(pedidoSelected.getMovimento(), Integer.parseInt(qtdPessoas));
+                        
+                        if (lstMoviFechaMesa.size() > 0) {
+                            lstMoviFechaMesa.remove(lstMoviFechaMesa.get(0));
+                        }                        
+                        
+                        while(pedidoSelected.getMovimento().size() > 0){
+                            lstMoviFechaMesa.add(pedidoSelected.getMovimento().get(0));
+                            pedidoSelected.getMovimento().remove(pedidoSelected.getMovimento().get(0));
+                        }
+                        
+                        JanelaFechaMesa janela = new JanelaFechaMesa(lstMoviFechaMesa, Integer.parseInt(qtdPessoas));
                         
                         janela.setSize(250,300);
                         janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -376,7 +409,7 @@ public class JanelaPedidos extends JFrame{
                         lstPedidos.setEnabled(true);
                         cboMesas.setEnabled(true);
                         preencheComboBox();
-                        
+                        txtTotalMesa.setText("R$ 0,00");
                         lstMoviPedidos.setModel(new DefaultListModel());
                     }
                 }
@@ -429,6 +462,15 @@ public class JanelaPedidos extends JFrame{
             }
             achouMesa = false;
         }
+    }
+    
+    private float CalculaTotalMesa(){
+        float vlrTotal = 0;
+        Pedido pedidoMovi = lstPedidos.getSelectedValue();                
+        for(int i = 0; i < pedidoMovi.getMovimento().size(); i++){
+            vlrTotal = vlrTotal + pedidoMovi.getMovimento().get(i).getVlrTotal();
+        }
+        return vlrTotal;
     }
     
 }

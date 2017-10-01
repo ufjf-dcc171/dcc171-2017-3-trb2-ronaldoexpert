@@ -63,6 +63,7 @@ public class JanelaMesas extends JFrame {
         //Funcionamento dos botões
         btnNovo.addActionListener(new onClickBotao());
         btnGravar.addActionListener(new onClickBotao());
+        btnExcluir.addActionListener(new onClickBotao());
         
         
         //Double click na lista
@@ -105,8 +106,16 @@ public class JanelaMesas extends JFrame {
                     txtCodMesa.grabFocus();
                     btnNovo.setEnabled(true);
                     btnGravar.setEnabled(false);
-                    LimpaCampos();
-                }               
+                    LimpaCampos();                    
+                } 
+            }else if(e.getSource()==btnExcluir){  
+                if (lstMesas.isSelectionEmpty() == false){ 
+                    Mesas mesaSelected = lstMesas.getSelectedValue();
+                    mesas.remove(mesaSelected);
+                    lstMesas.updateUI();
+                    lstMesas.isSelectionEmpty();
+                    LimpaCampos();      
+                }              
             }                
         }
     }

@@ -68,6 +68,7 @@ public class JanelaProdutos extends JFrame{
         //Funcionamento dos botões
         btnNovo.addActionListener(new onClickBotao());
         btnGravar.addActionListener(new onClickBotao());
+        btnExcluir.addActionListener(new onClickBotao());
         
         //Double click na lista
         lstProdutos.addMouseListener(new MouseAdapter() {
@@ -113,6 +114,14 @@ public class JanelaProdutos extends JFrame{
                     btnGravar.setEnabled(false);
                     LimpaCampos();
                 }               
+            }else if(e.getSource()==btnGravar){ 
+                if (lstProdutos.isSelectionEmpty() == false){ 
+                    Produtos prodSelected = lstProdutos.getSelectedValue();
+                    produtos.remove(prodSelected);
+                    lstProdutos.updateUI();
+                    lstProdutos.isSelectionEmpty();
+                    LimpaCampos();      
+                } 
             }                
         }
     }
