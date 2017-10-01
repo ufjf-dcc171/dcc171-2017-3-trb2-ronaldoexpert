@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.OutputStream;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -20,9 +19,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.text.Document;
-import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 
@@ -71,6 +70,7 @@ public class JanelaPedidos extends JFrame{
     private final JLabel lblResponsavel = new JLabel("Responsável");
     private final JTextField txtTotalMesa = new JTextField();
     private final JLabel lblTotalMesa = new JLabel("Total Mesa:");
+    private JTextField txtData = new JTextField();
     
     private final JButton btnAdd = new JButton("ADD");
     private final JButton btnExcluir = new JButton("Excluir");
@@ -79,6 +79,7 @@ public class JanelaPedidos extends JFrame{
     private boolean achouMesa = false;
     private boolean vNovoPedido = false;
     private boolean vNovoProduto = false;
+    private Date dataAtaual;
     
     public JanelaPedidos(List<Mesas> mesas, List<Produtos> produtos, List<Pedido> pedidos, List<MoviPedidos> moviPedidos) {
         super("Pedidos");
@@ -122,8 +123,9 @@ public class JanelaPedidos extends JFrame{
             txtTotalMesa.setEditable(false);
             txtTotalMesa.setText("R$ 0,00");
             pnlComponentes.add(cboMesas);
+            txtData.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date(System.currentTimeMillis())));
             
-            pnlComponentes.add(lblResponsavel);
+            pnlComponentes.add(lblResponsavel); 
             pnlComponentes.add(txtResponsavel);
             pnlComponentes.add(lblProduto);
             pnlComponentes.add(txtProduto);
@@ -133,6 +135,7 @@ public class JanelaPedidos extends JFrame{
             pnlComponentes.add(txtQuantidade);
             pnlComponentes.add(lblTotal);
             pnlComponentes.add(txtTotal);
+            pnlComponentes.add(txtData);
             
             
             pnlBotoesProduto.add(btnAdd);
@@ -287,10 +290,10 @@ public class JanelaPedidos extends JFrame{
                     if (mesas.get(j).getDescricao() == cboMesas.getSelectedItem().toString()){
                         p.setIdMesa(mesas.get(j));
                     }
-                }                    
-
-                p.setData("25/09/2017");
-                p.setNumero(idPedido);
+                }   
+    		
+                p.setData(txtData.getText());
+                p.setNumero(idPedido); 
                 p.setResponsavel(txtResponsavel.getText());
                 p.setTotal(0);
                 pedidos.add(p);

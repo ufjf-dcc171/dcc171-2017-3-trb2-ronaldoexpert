@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,6 +17,7 @@ public class JanelaPrincipal extends JFrame{
     private final JButton btnCadastroProduto = new JButton("Produtos");
     private final JButton btnCadastroMesa = new JButton("Mesas");
     private int i = 0;
+    private Date dataAtual = new Date(); 
     
     //Cria as mesas
     private static Mesas m1 = new Mesas(1, "Mesa 001");
