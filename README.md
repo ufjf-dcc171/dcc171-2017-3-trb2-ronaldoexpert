@@ -11,3 +11,5 @@ No fechamento da mesa será exibido o total do pedido, assim como o valor dividi
 Iremos utilizar ArrayList para listar os dados. 
 O sistema irá iniciar vazio, fazendo a necessidade de inserir os produtos a cada execução.
 Futuramente poderá ser implementado a persistência de dados.
+Futuramente será implmentado a opção do usuário poder vizualizar as vendas do dia,
+assim como o histórico de vendas por data.
