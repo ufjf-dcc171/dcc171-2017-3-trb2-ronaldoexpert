@@ -83,11 +83,6 @@ public class JanelaPrincipal extends JFrame{
             moviPedidos.add(movi1);
             moviPedidos.add(movi2);
             moviPedidos.add(movi3);
-            /*
-            pedido01.getMovimento().add(movi1);        
-            pedido02.getMovimento().add(movi2);        
-            pedido03.getMovimento().add(movi3);
-            */
         //FIM
 
         //Adiciona PEDIDOS ao novo ArrayList
@@ -183,7 +178,7 @@ public class JanelaPrincipal extends JFrame{
                 janela.setTitle("Pedidos");    
             
             }else if(e.getSource() == btnCadastroMesa){
-                JanelaMesas janela = new JanelaMesas(mesas);
+                JanelaMesas janela = new JanelaMesas(mesas, pedidos);
                 janela.setSize(500, 400);
                 janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 janela.setIconImage(Toolkit.getDefaultToolkit().getImage("logo2.png"));

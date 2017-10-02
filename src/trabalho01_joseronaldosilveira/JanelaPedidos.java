@@ -125,7 +125,8 @@ public class JanelaPedidos extends JFrame{
         //Componentes
             txtCodProduto.setEnabled(false);
             txtTotal.setEnabled(false); 
-            btnFecharMesa.setEnabled(false); 
+            btnFecharMesa.setEnabled(false);
+            btnGravar.setEnabled(false); 
             txtTotalMesa.setFont(new Font("Times New Roman", Font.BOLD, 22));  
             txtTotalMesa.setEditable(false);
             txtTotalMesa.setText("R$ 0,00");
@@ -193,6 +194,7 @@ public class JanelaPedidos extends JFrame{
                     cboMesas.setEnabled(false); 
                     lstPedidos.setEnabled(false);
                     btnFecharMesa.setEnabled(true);
+                    btnGravar.setEnabled(true);
                     
                     txtTotalMesa.setText("R$ " + CalculaTotalMesa());
                 }
@@ -281,6 +283,7 @@ public class JanelaPedidos extends JFrame{
             if(e.getSource() == btnNovo){     //Novo pedido                 
                 cboMesas.setEnabled(true); 
                 btnNovo.setEnabled(false);
+                btnGravar.setEnabled(true);
                 lstPedidos.setEnabled(false);
                 vNovoPedido = true;
                 txtProduto.grabFocus();
@@ -329,6 +332,7 @@ public class JanelaPedidos extends JFrame{
                 lstPedidos.clearSelection(); 
                 lstMoviPedidos.setModel(new DefaultListModel());
                 vNovoPedido = false;
+                btnGravar.setEnabled(false);
                 txtResponsavel.setText(""); 
                 txtTotalMesa.setText("R$ 0,00");
                 
@@ -340,6 +344,7 @@ public class JanelaPedidos extends JFrame{
                     janelaPrinci.getPedidos().remove(pedidoSelected);
                     lstPedidos.updateUI();
                     lstPedidos.setEnabled(true);
+                    btnGravar.setEnabled(false);
                 }
                 LimpaProdutos();
                 btnNovo.setEnabled(true);
@@ -384,7 +389,7 @@ public class JanelaPedidos extends JFrame{
                     lstMoviPedidos.updateUI();                   
                     
                     txtTotalMesa.setText("R$ " + CalculaTotalMesa());
-                    
+                    btnGravar.setEnabled(false);
                     LimpaProdutos();      
                 }                
                 
@@ -407,11 +412,9 @@ public class JanelaPedidos extends JFrame{
                         if (lstMoviFechaMesa.size() > 0) {
                             lstMoviFechaMesa.remove(lstMoviFechaMesa.get(0));
                         }
-                        
                         while(pedidoSelected.getMovimento().size() > 0){
                             lstMoviFechaMesa.add(pedidoSelected.getMovimento().get(0));
-                            pedidoSelected.getMovimento().remove(pedidoSelected.getMovimento().get(0));
-                            //janelaPrinci.getPedidos().get(indexPedido).getMovimento().remove(janelaPrinci.getPedidos().get(indexPedido).getMovimento().get(0)); 
+                            pedidoSelected.getMovimento().remove(pedidoSelected.getMovimento().get(0)); 
                         }
                         
                         JanelaFechaMesa janela = new JanelaFechaMesa(lstMoviFechaMesa, Integer.parseInt(qtdPessoas), pedidoSelected); 
@@ -425,6 +428,7 @@ public class JanelaPedidos extends JFrame{
                         lstPedidos.updateUI();
                         lstPedidos.setEnabled(true);
                         cboMesas.setEnabled(true);
+                        btnGravar.setEnabled(false);
                         preencheComboBox();
                         txtTotalMesa.setText("R$ 0,00"); 
                         txtResponsavel.setText("");

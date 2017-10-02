@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -24,6 +25,7 @@ public class JanelaMesas extends JFrame {
     private final JPanel pnlTexts = new JPanel();
     
     private final List<Mesas> mesas;
+    private final List<Pedido> pedidos;
     private final JList<Mesas> lstMesas = new JList<Mesas>(new DefaultListModel<>()); 
     
     JanelaPrincipal p = new JanelaPrincipal();
@@ -37,7 +39,7 @@ public class JanelaMesas extends JFrame {
     private final JButton btnExcluir = new JButton("Excluir");
     private String vStatus = "";
     
-    public JanelaMesas(List<Mesas> sampleData) throws HeadlessException {
+    public JanelaMesas(List<Mesas> sampleData, List<Pedido> pedidos) throws HeadlessException {
         super("Mesas");
         
         setLayout(new BorderLayout());
@@ -45,6 +47,7 @@ public class JanelaMesas extends JFrame {
         pnlTexts.setLayout(new GridLayout(11, 1));
         
         this.mesas = sampleData; 
+        this.pedidos = pedidos;
         //Le Array e coloca na grid
         lstMesas.setModel(new MesasListModel(mesas));               
         lstMesas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -119,11 +122,15 @@ public class JanelaMesas extends JFrame {
             }else if(e.getSource()==btnExcluir){  
                 if (lstMesas.isSelectionEmpty() == false){ 
                     Mesas mesaSelected = lstMesas.getSelectedValue();
-                    mesas.remove(mesaSelected);
-                    lstMesas.updateUI();
-                    lstMesas.isSelectionEmpty();
-                    btnGravar.setEnabled(false); 
-                    LimpaCampos();      
+                    if (verificaMesas(mesaSelected.getCodigo())){
+                        mesas.remove(mesaSelected);
+                        lstMesas.updateUI();
+                        lstMesas.isSelectionEmpty();
+                        btnGravar.setEnabled(false); 
+                        LimpaCampos();    
+                    }else{
+                        JOptionPane.showMessageDialog(null, "A mesa está aberta em um pedido. Não pode ser excluida.");
+                    }     
                 }              
             }                
         }
@@ -132,5 +139,15 @@ public class JanelaMesas extends JFrame {
     private void LimpaCampos(){
         txtCodMesa.setText("");
         txtDescMesa.setText("");
+    }
+    
+    private boolean verificaMesas(int codMesa){
+        boolean retorno = true;
+        for (int i =0; i < pedidos.size(); i++){
+            if (codMesa == pedidos.get(i).getIdMesa().getCodigo()){
+                retorno = false;
+            }
+        }    
+        return retorno;
     }
 }
