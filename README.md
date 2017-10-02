@@ -6,7 +6,8 @@ O sistema será desenvolvido para que possa controlar o fluxo nas mesas.
 Mesas e produtos deverão ser previamente cadastrados.
 O atendente irá abrir uma mesa, colocando a data, o nome do responsavel pela mesa assim como 1 produto;
 A mesa poderá ser alterada a qualquer momento, inserindo novos produtos.
-No fechamento da mesa será exibido o total do pedido, assim como o valor dividido, se o cliente assim quizer.
+No fechamento da mesa será exibido o total do pedido, assim como o valor dividido, caso o cliente solicite.
+Inicialmente, não será feita a impressão do pedido, somente a vizualização do fechamento na tela.
 
 Iremos utilizar ArrayList para listar os dados. 
 O sistema irá iniciar vazio, fazendo a necessidade de inserir os produtos a cada execução.
