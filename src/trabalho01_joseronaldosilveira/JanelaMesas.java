@@ -114,6 +114,7 @@ public class JanelaMesas extends JFrame {
                     mesas.remove(mesaSelected);
                     lstMesas.updateUI();
                     lstMesas.isSelectionEmpty();
+                    btnGravar.setEnabled(false); 
                     LimpaCampos();      
                 }              
             }                

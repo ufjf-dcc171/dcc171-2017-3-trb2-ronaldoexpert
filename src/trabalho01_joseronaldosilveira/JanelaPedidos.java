@@ -135,7 +135,6 @@ public class JanelaPedidos extends JFrame{
             pnlComponentes.add(txtQuantidade);
             pnlComponentes.add(lblTotal);
             pnlComponentes.add(txtTotal);
-            pnlComponentes.add(txtData);
             
             
             pnlBotoesProduto.add(btnAdd);
@@ -321,7 +320,7 @@ public class JanelaPedidos extends JFrame{
                 lstMoviPedidos.setModel(new DefaultListModel());
                 vNovoPedido = false;
                 txtResponsavel.setText(""); 
-                txtTotalMesa.setText("R$ " + CalculaTotalMesa());
+                txtTotalMesa.setText("R$ 0,00");
                 
             }else if(e.getSource()==btnCancelar){ 
                 if(vNovoPedido == true){
@@ -400,7 +399,7 @@ public class JanelaPedidos extends JFrame{
                             pedidoSelected.getMovimento().remove(pedidoSelected.getMovimento().get(0));
                         }
                         
-                        JanelaFechaMesa janela = new JanelaFechaMesa(lstMoviFechaMesa, Integer.parseInt(qtdPessoas));
+                        JanelaFechaMesa janela = new JanelaFechaMesa(lstMoviFechaMesa, Integer.parseInt(qtdPessoas), pedidoSelected); 
                         
                         janela.setSize(250,300);
                         janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -412,7 +411,8 @@ public class JanelaPedidos extends JFrame{
                         lstPedidos.setEnabled(true);
                         cboMesas.setEnabled(true);
                         preencheComboBox();
-                        txtTotalMesa.setText("R$ 0,00");
+                        txtTotalMesa.setText("R$ 0,00"); 
+                        txtResponsavel.setText("");
                         lstMoviPedidos.setModel(new DefaultListModel());
                     }
                 }

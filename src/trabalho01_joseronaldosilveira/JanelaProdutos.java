@@ -114,12 +114,13 @@ public class JanelaProdutos extends JFrame{
                     btnGravar.setEnabled(false);
                     LimpaCampos();
                 }               
-            }else if(e.getSource()==btnGravar){ 
+            }else if(e.getSource()==btnExcluir){ 
                 if (lstProdutos.isSelectionEmpty() == false){ 
                     Produtos prodSelected = lstProdutos.getSelectedValue();
                     produtos.remove(prodSelected);
                     lstProdutos.updateUI();
                     lstProdutos.isSelectionEmpty();
+                    btnGravar.setEnabled(false); 
                     LimpaCampos();      
                 } 
             }                
