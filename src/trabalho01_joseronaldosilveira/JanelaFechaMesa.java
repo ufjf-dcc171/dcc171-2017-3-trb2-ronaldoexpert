@@ -2,6 +2,7 @@
 package trabalho01_joseronaldosilveira;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
@@ -40,6 +41,12 @@ public class JanelaFechaMesa extends JFrame{
         pnlCenter.setLayout(new BorderLayout());
         pnlSouth.setLayout(new GridLayout(5, 2));
         pnlNorthComponentes.setLayout(new GridLayout(2, 1));
+        
+        pnlNorth.setBackground(Color.WHITE);
+        pnlNorthComponentes.setBackground(Color.WHITE);
+        pnlSouth.setBackground(Color.WHITE);
+        txtTotal.setBackground(Color.WHITE);
+        txtTotalPessoa.setBackground(Color.WHITE);
         
         //Componentes
         txtTotal.setEditable(false);

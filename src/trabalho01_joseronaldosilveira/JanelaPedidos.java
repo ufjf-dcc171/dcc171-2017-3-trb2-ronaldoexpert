@@ -2,6 +2,7 @@
 package trabalho01_joseronaldosilveira;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -41,7 +42,7 @@ public class JanelaPedidos extends JFrame{
     private final List<MoviPedidos> lstMoviFechaMesa = new ArrayList<MoviPedidos>();
     
     private final JList<HistoricoDiario> lstHistorico = new JList<HistoricoDiario>(new DefaultListModel<>());
-
+    private JanelaPrincipal janelaPrinci = new JanelaPrincipal();
     
     private final JPanel pnlDireita = new JPanel();
     private final JPanel pnlEsquerda = new JPanel();
@@ -93,6 +94,12 @@ public class JanelaPedidos extends JFrame{
         pnlComponentes.setLayout(new GridLayout(12, 1));
         pnlBotoes.setLayout(new GridLayout(1, 2));
         pnlDiretaBaixo.setLayout(new BorderLayout());
+        
+        pnlDiretaBaixo.setBackground(Color.white);
+        pnlComponentes.setBackground(Color.white);
+        pnlBotoesProduto.setBackground(Color.white);
+        cboMesas.setBackground(Color.white);
+        txtTotalMesa.setBackground(Color.white);
         
         //Passa os dados para a lista e defina o modelo para as listas com o conjunto de dados
         this.mesas = mesas;
@@ -277,6 +284,7 @@ public class JanelaPedidos extends JFrame{
                 lstPedidos.setEnabled(false);
                 vNovoPedido = true;
                 txtProduto.grabFocus();
+                txtResponsavel.setText(""); 
                 
                 Pedido p = new Pedido();
                 for (int i = 0; i < pedidos.size(); i++){
@@ -296,6 +304,8 @@ public class JanelaPedidos extends JFrame{
                 p.setResponsavel(txtResponsavel.getText());
                 p.setTotal(0);
                 pedidos.add(p);
+                janelaPrinci.setPedidos(pedidos);
+                
                 lstPedidos.updateUI();
                 lstPedidos.setSelectedIndex(count);
                 txtResponsavel.grabFocus();
@@ -327,6 +337,7 @@ public class JanelaPedidos extends JFrame{
                     Pedido pedidoSelected = lstPedidos.getSelectedValue();
                     lstMoviPedidos.setModel(new DefaultListModel());
                     pedidos.remove(pedidoSelected);
+                    janelaPrinci.getPedidos().remove(pedidoSelected);
                     lstPedidos.updateUI();
                     lstPedidos.setEnabled(true);
                 }
@@ -356,7 +367,7 @@ public class JanelaPedidos extends JFrame{
                             pedidoSelected.getMovimento().add(mp);
                         }
                     }
-                    
+                    janelaPrinci.setMoviPedidos(moviPedidos);
                     txtTotalMesa.setText("R$ " + CalculaTotalMesa());
                 
                     lstMoviPedidos.setModel(new MoviPedidosListModel(pedidoSelected.getMovimento()));

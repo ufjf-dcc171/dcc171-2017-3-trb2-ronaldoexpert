@@ -4,16 +4,15 @@
  */
 package trabalho01_joseronaldosilveira;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.Toolkit;
 import javax.swing.JFrame;
-
-
+    
 public class Trabalho01_JoseRonaldoSilveira {
 
     public static void main(String[] args) {
         JanelaPrincipal janelaP = new JanelaPrincipal();
-        janelaP.setSize(300, 400);
+        janelaP.setSize(370, 400);
+        janelaP.setIconImage(Toolkit.getDefaultToolkit().getImage("logo2.png"));
         janelaP.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         janelaP.setLocationRelativeTo(null);
         janelaP.setVisible(true);  

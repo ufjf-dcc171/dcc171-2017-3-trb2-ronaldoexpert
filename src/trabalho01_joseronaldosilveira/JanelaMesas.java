@@ -1,6 +1,7 @@
 package trabalho01_joseronaldosilveira;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -25,6 +26,8 @@ public class JanelaMesas extends JFrame {
     private final List<Mesas> mesas;
     private final JList<Mesas> lstMesas = new JList<Mesas>(new DefaultListModel<>()); 
     
+    JanelaPrincipal p = new JanelaPrincipal();
+    
     private final JTextField txtCodMesa = new JTextField(20);
     private final JLabel lblCodMesa = new JLabel("Código");
     private final JTextField txtDescMesa = new JTextField(20);
@@ -45,6 +48,7 @@ public class JanelaMesas extends JFrame {
         //Le Array e coloca na grid
         lstMesas.setModel(new MesasListModel(mesas));               
         lstMesas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        pnlTexts.setBackground(Color.white);
         
         painel.add(new JScrollPane(lstMesas));         
         
@@ -95,11 +99,15 @@ public class JanelaMesas extends JFrame {
                 if ((!txtCodMesa.getText().isEmpty()) && (!txtDescMesa.getText().isEmpty())){
                     if (vStatus != "Update"){
                         Mesas m = new Mesas(Integer.parseInt(txtCodMesa.getText()), txtDescMesa.getText());
-                        mesas.add(m);    
+                        mesas.add(m);
+                        
+                        p.setMesas(mesas); 
                     }else{
                         Mesas m = lstMesas.getSelectedValue();
                         m.setCodigo(Integer.parseInt(txtCodMesa.getText()));
                         m.setDescricao(txtDescMesa.getText());
+                        
+                        p.setMesas(mesas);
                     }
                     vStatus = "";                    
                     lstMesas.updateUI();                    

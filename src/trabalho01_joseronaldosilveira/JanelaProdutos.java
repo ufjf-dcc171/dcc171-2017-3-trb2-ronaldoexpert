@@ -1,6 +1,7 @@
 package trabalho01_joseronaldosilveira;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -19,10 +20,12 @@ import javax.swing.JTextField;
 
 public class JanelaProdutos extends JFrame{
     private final List<Produtos> produtos;
+    private final List<MoviPedidos> moviPed;
     private final JList<Produtos> lstProdutos = new JList<Produtos>(new DefaultListModel<>()); 
     
     private final JPanel painel = new JPanel();
     private final JPanel pnlTexts = new JPanel();
+    private JanelaPrincipal p = new JanelaPrincipal();
     
     private final JTextField txtCodProduto = new JTextField(20);
     private final JLabel lblCodProduto = new JLabel("Código");
@@ -36,7 +39,7 @@ public class JanelaProdutos extends JFrame{
     private String vStatus = "";    
     
     
-    public JanelaProdutos(List<Produtos> produtos) throws HeadlessException {
+    public JanelaProdutos(List<Produtos> produtos, List<MoviPedidos> moviPed) throws HeadlessException {
         super("Produtos");
         
         setLayout(new BorderLayout());
@@ -44,7 +47,10 @@ public class JanelaProdutos extends JFrame{
         pnlTexts.setLayout(new GridLayout(11, 1));
         
         this.produtos = produtos;
+        this.moviPed = moviPed;
+        
         lstProdutos.setModel(new ProdutosListModel(produtos)); 
+        pnlTexts.setBackground(Color.white);
         
         painel.add(new JScrollPane(lstProdutos));
         
@@ -100,13 +106,17 @@ public class JanelaProdutos extends JFrame{
                 if ((!txtCodProduto.getText().isEmpty()) && (!txtDescProduto.getText().isEmpty()) && (!txtVlrUnitario.getText().isEmpty())){
                     if (vStatus != "Update"){
                         Produtos m = new Produtos(Integer.parseInt(txtCodProduto.getText()), txtDescProduto.getText(), Float.parseFloat(txtVlrUnitario.getText()));
-                        produtos.add(m);    
+                        produtos.add(m);
+                        p.setProdutos(produtos);
+                        
                     }else{
                         Produtos m = lstProdutos.getSelectedValue();
                         m.setCodigo(Integer.parseInt(txtCodProduto.getText()));
                         m.setDescricao(txtDescProduto.getText());
                         m.setVlrUunitario(Float.parseFloat(txtVlrUnitario.getText()));
+                        p.setProdutos(produtos);
                     }
+                    
                     vStatus = "";                    
                     lstProdutos.updateUI();                    
                     txtCodProduto.grabFocus();
