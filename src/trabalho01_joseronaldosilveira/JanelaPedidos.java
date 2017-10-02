@@ -345,6 +345,7 @@ public class JanelaPedidos extends JFrame{
                 btnNovo.setEnabled(true);
                 lstPedidos.setEnabled(true);  
                 lstMoviPedidos.setModel(new DefaultListModel());
+                txtTotal.setText("R$ 0,00");
                 vNovoPedido = false;
             
             }else if(e.getSource() == btnAdd){        //insere ou altera um produto
@@ -392,7 +393,8 @@ public class JanelaPedidos extends JFrame{
                     String message = "Deseja realmente fechar a mesa?";
                     String title = "Fechar Mesa";
                     String qtdPessoas;
-        
+                    int indexPedido = 0;
+                    
                     int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
                     if (reply == JOptionPane.YES_OPTION)
                     {
@@ -400,14 +402,16 @@ public class JanelaPedidos extends JFrame{
                         
                         LimpaProdutos();
                         Pedido pedidoSelected = lstPedidos.getSelectedValue();
+                        indexPedido = lstPedidos.getSelectedIndex();
                         
                         if (lstMoviFechaMesa.size() > 0) {
                             lstMoviFechaMesa.remove(lstMoviFechaMesa.get(0));
-                        }                        
+                        }
                         
                         while(pedidoSelected.getMovimento().size() > 0){
                             lstMoviFechaMesa.add(pedidoSelected.getMovimento().get(0));
                             pedidoSelected.getMovimento().remove(pedidoSelected.getMovimento().get(0));
+                            //janelaPrinci.getPedidos().get(indexPedido).getMovimento().remove(janelaPrinci.getPedidos().get(indexPedido).getMovimento().get(0)); 
                         }
                         
                         JanelaFechaMesa janela = new JanelaFechaMesa(lstMoviFechaMesa, Integer.parseInt(qtdPessoas), pedidoSelected); 

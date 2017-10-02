@@ -60,11 +60,9 @@ public class JanelaPrincipal extends JFrame{
     ImageIcon icon = new ImageIcon("logo.png");
     JLabel label = new JLabel(icon);
     
+    
     public JanelaPrincipal() throws HeadlessException {
-        super("Principal");
-        painel.setLayout(null);        
-        painel.setBackground(Color.WHITE);
-        
+        super("Principal");        
         //Adiciona mesas ao novo ArrayList
             mesas.add(m1);
             mesas.add(m2);
@@ -80,22 +78,37 @@ public class JanelaPrincipal extends JFrame{
             produtos.add(prod4);
         //FIM
         
+        if (pedidos.size() == 0){
         //Adiciona MOVIPEDIDOS ao novo ArrayList
             moviPedidos.add(movi1);
             moviPedidos.add(movi2);
             moviPedidos.add(movi3);
+            /*
+            pedido01.getMovimento().add(movi1);        
+            pedido02.getMovimento().add(movi2);        
+            pedido03.getMovimento().add(movi3);
+            */
         //FIM
-        
+
         //Adiciona PEDIDOS ao novo ArrayList
             pedidos.add(pedido01);
             pedidos.add(pedido02);
             pedidos.add(pedido03);
-            
-            pedido01.getMovimento().add(moviPedidos.get(0));        
-            pedido02.getMovimento().add(moviPedidos.get(1));        
-            pedido03.getMovimento().add(moviPedidos.get(2));
-        //FIM      
+                
+            for (int i = 0; i < pedidos.size(); i++){
+                if (pedidos.get(i).getMovimento().size() > 0){
+                    pedidos.get(i).getMovimento().remove(pedidos.get(i).getMovimento().get(0));
+                }
+            }
+                
+            pedidos.get(0).getMovimento().add(movi1);
+            pedidos.get(1).getMovimento().add(movi2);
+            pedidos.get(2).getMovimento().add(movi3);
+        //FIM */     
+        }
         
+        painel.setLayout(null);        
+        painel.setBackground(Color.WHITE);
         
         btnAbrePedidos.setSize(150, 50);
         btnAbrePedidos.setLocation(100, 130); //(Horizontal / Vertical)
@@ -191,7 +204,7 @@ public class JanelaPrincipal extends JFrame{
     }
     
             
-    private static List<Mesas> criaMesas() {
+    /*private static List<Mesas> criaMesas() {
         List<Mesas> mesas = new ArrayList<>();
         mesas.add(m1);
         mesas.add(m2);
@@ -228,21 +241,8 @@ public class JanelaPrincipal extends JFrame{
         moviPed.add(movi3);
         
         return moviPed;
-    }
+    }*/
     
 }
-
-        
-        /*
-        //Cria o pedido
-        Pedido p1 = new Pedido("00001", "21/09/2017", 70, m1, "Ronaldo");
-        
-        //Cria o movimento do pedido
-        MoviPedidos movi1 = new MoviPedidos(p1, prod1, 10, 7, 70);        
-        
-        //Adiciona o movimento ao pedido
-        p1.getMovimento().add(movi1);
-        
-        //cria o array com os pedidos*/
         
         

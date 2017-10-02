@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -127,11 +128,15 @@ public class JanelaProdutos extends JFrame{
             }else if(e.getSource()==btnExcluir){ 
                 if (lstProdutos.isSelectionEmpty() == false){ 
                     Produtos prodSelected = lstProdutos.getSelectedValue();
-                    produtos.remove(prodSelected);
-                    lstProdutos.updateUI();
-                    lstProdutos.isSelectionEmpty();
-                    btnGravar.setEnabled(false); 
-                    LimpaCampos();      
+                    if (verificaMoviPedidos(prodSelected.getCodigo())){                    
+                        produtos.remove(prodSelected);
+                        lstProdutos.updateUI();
+                        lstProdutos.isSelectionEmpty();
+                        btnGravar.setEnabled(false); 
+                        LimpaCampos();  
+                    }else{
+                        JOptionPane.showMessageDialog(null, "O produto faz parte de um pedido. Não pode ser excluido.");
+                    }
                 } 
             }                
         }
@@ -142,5 +147,16 @@ public class JanelaProdutos extends JFrame{
         txtDescProduto.setText("");
         txtVlrUnitario.setText("");
     }
+    
+    private boolean verificaMoviPedidos(int codProduto){
+        boolean retorno = true;
+        for (int i =0; i < moviPed.size(); i++){
+            if (codProduto == moviPed.get(i).getCodProduto().getCodigo()){
+                retorno = false;
+            }
+        }    
+        return retorno;
+    }
+    
     
 }
