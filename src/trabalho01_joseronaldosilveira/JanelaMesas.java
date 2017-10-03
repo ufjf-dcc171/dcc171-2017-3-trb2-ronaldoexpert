@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,14 +30,18 @@ public class JanelaMesas extends JFrame {
     private final JList<Mesas> lstMesas = new JList<Mesas>(new DefaultListModel<>()); 
     
     JanelaPrincipal p = new JanelaPrincipal();
+    ImageIcon IconNovo = new ImageIcon("novo.gif");
+    ImageIcon IconGravar = new ImageIcon("gravar.gif");
+    ImageIcon IconExcluir = new ImageIcon("excluir.gif");
     
     private final JTextField txtCodMesa = new JTextField(20);
     private final JLabel lblCodMesa = new JLabel("Código");
     private final JTextField txtDescMesa = new JTextField(20);
     private final JLabel lblDescMesa = new JLabel("Descrição");
-    private final JButton btnNovo = new JButton("Novo");
-    private final JButton btnGravar = new JButton("Gravar");
-    private final JButton btnExcluir = new JButton("Excluir");
+    private final JButton btnNovo = new JButton("Novo", IconNovo);
+    private final JButton btnGravar = new JButton("Gravar", IconGravar);
+    private final JButton btnExcluir = new JButton("Excluir", IconExcluir);
+    
     private String vStatus = "";
     
     public JanelaMesas(List<Mesas> sampleData, List<Pedido> pedidos) throws HeadlessException {
@@ -52,6 +57,7 @@ public class JanelaMesas extends JFrame {
         lstMesas.setModel(new MesasListModel(mesas));               
         lstMesas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         pnlTexts.setBackground(Color.white);
+        
         
         painel.add(new JScrollPane(lstMesas));         
         

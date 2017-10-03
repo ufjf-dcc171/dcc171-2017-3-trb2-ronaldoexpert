@@ -3,6 +3,7 @@ package trabalho01_joseronaldosilveira;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -23,6 +24,7 @@ import javax.swing.ListSelectionModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 
@@ -52,9 +54,15 @@ public class JanelaPedidos extends JFrame{
     private final JPanel pnlBotoesProduto = new JPanel(); 
     private final JPanel pnlDiretaBaixo = new JPanel(); 
     
-    private final JButton btnNovo = new JButton("Novo");
-    private final JButton btnGravar = new JButton("Gravar");
-    private final JButton btnCancelar = new JButton("Cancelar");
+    ImageIcon IconNovo = new ImageIcon("novo.gif");
+    ImageIcon IconGravar = new ImageIcon("gravar.gif");
+    ImageIcon IconExcluir = new ImageIcon("excluir.gif");
+    ImageIcon IconCancelar = new ImageIcon("cancelar.gif");
+    ImageIcon IconFechaMesa = new ImageIcon("fechaMesa.gif");
+    
+    private final JButton btnNovo = new JButton("Novo", IconNovo);
+    private final JButton btnGravar = new JButton("Gravar", IconGravar);
+    private final JButton btnCancelar = new JButton("Cancelar", IconCancelar);
     
     private JComboBox cboMesas = new JComboBox(); 
     
@@ -73,9 +81,9 @@ public class JanelaPedidos extends JFrame{
     private final JLabel lblTotalMesa = new JLabel("Total Mesa:");
     private JTextField txtData = new JTextField();
     
-    private final JButton btnAdd = new JButton("ADD");
-    private final JButton btnExcluir = new JButton("Excluir");
-    private final JButton btnFecharMesa = new JButton("Fechar Mesa");
+    private final JButton btnAdd = new JButton("ADD", IconGravar);
+    private final JButton btnExcluir = new JButton("Excluir", IconExcluir);
+    private final JButton btnFecharMesa = new JButton("Fechar Mesa", IconFechaMesa);
     
     private boolean achouMesa = false;
     private boolean vNovoPedido = false;
@@ -130,8 +138,10 @@ public class JanelaPedidos extends JFrame{
             txtTotalMesa.setFont(new Font("Times New Roman", Font.BOLD, 22));  
             txtTotalMesa.setEditable(false);
             txtTotalMesa.setText("R$ 0,00");
+            txtTotal.setText("R$ 0,00");
             pnlComponentes.add(cboMesas);
             txtData.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date(System.currentTimeMillis())));
+            btnFecharMesa.setEnabled(false);
             
             pnlComponentes.add(lblResponsavel); 
             pnlComponentes.add(txtResponsavel);
@@ -195,7 +205,7 @@ public class JanelaPedidos extends JFrame{
                     lstPedidos.setEnabled(false);
                     btnFecharMesa.setEnabled(true);
                     btnGravar.setEnabled(true);
-                    
+                    btnFecharMesa.setEnabled(true);
                     txtTotalMesa.setText("R$ " + CalculaTotalMesa());
                 }
              } 
@@ -206,13 +216,12 @@ public class JanelaPedidos extends JFrame{
         @Override
             public void mouseClicked(MouseEvent evt) {
                 if (evt.getClickCount() == 2){
+                    LimpaProdutos();
                     Produtos produtoSelected = lstProdutos.getSelectedValue();                    
                     txtCodProduto.setText(produtoSelected.getCodigo() + ""); 
                     txtProduto.setText(produtoSelected.getDescricao()); 
                     txtVlrUnit.setText(produtoSelected.getVlrUunitario()+ ""); 
                     
-                    txtQuantidade.setText("");
-                    txtTotal.setText("");
                     txtQuantidade.grabFocus();
                     vNovoProduto = true;
                 }
@@ -224,6 +233,7 @@ public class JanelaPedidos extends JFrame{
         @Override
             public void mouseClicked(MouseEvent evt) {
                 if (evt.getClickCount() == 2){
+                    LimpaProdutos();
                     MoviPedidos produtoSelected = lstMoviPedidos.getSelectedValue();                    
                     txtCodProduto.setText(produtoSelected.getCodProduto() + ""); 
                     txtProduto.setText(produtoSelected.getCodProduto().getDescricao()); 
@@ -243,7 +253,7 @@ public class JanelaPedidos extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 if ((!txtVlrUnit.getText().isEmpty()) && (!txtQuantidade.getText().isEmpty())) {
                     txtTotal.setText(Float.parseFloat(txtVlrUnit.getText()) * Float.parseFloat(txtQuantidade.getText()) + "");
-                }                
+                }
             }
         });
         
@@ -285,9 +295,12 @@ public class JanelaPedidos extends JFrame{
                 btnNovo.setEnabled(false);
                 btnGravar.setEnabled(true);
                 lstPedidos.setEnabled(false);
+                btnFecharMesa.setEnabled(false); 
                 vNovoPedido = true;
                 txtProduto.grabFocus();
                 txtResponsavel.setText(""); 
+                txtTotalMesa.setText("R$ 0,00");
+                txtTotal.setText("R$ 0,00");
                 
                 Pedido p = new Pedido();
                 for (int i = 0; i < pedidos.size(); i++){
@@ -351,7 +364,9 @@ public class JanelaPedidos extends JFrame{
                 lstPedidos.setEnabled(true);  
                 lstMoviPedidos.setModel(new DefaultListModel());
                 txtTotal.setText("R$ 0,00");
+                txtTotalMesa.setText("R$ 0,00");
                 vNovoPedido = false;
+                btnFecharMesa.setEnabled(false);
             
             }else if(e.getSource() == btnAdd){        //insere ou altera um produto
                Pedido pedidoSelected = lstPedidos.getSelectedValue();
@@ -375,7 +390,7 @@ public class JanelaPedidos extends JFrame{
                     }
                     janelaPrinci.setMoviPedidos(moviPedidos);
                     txtTotalMesa.setText("R$ " + CalculaTotalMesa());
-                
+                    txtTotal.setText("R$ 0,00");
                     lstMoviPedidos.setModel(new MoviPedidosListModel(pedidoSelected.getMovimento()));
                     lstMoviPedidos.updateUI();
                     lstMoviPedidos.setEnabled(true);
@@ -389,7 +404,6 @@ public class JanelaPedidos extends JFrame{
                     lstMoviPedidos.updateUI();                   
                     
                     txtTotalMesa.setText("R$ " + CalculaTotalMesa());
-                    btnGravar.setEnabled(false);
                     LimpaProdutos();      
                 }                
                 
@@ -417,6 +431,7 @@ public class JanelaPedidos extends JFrame{
                             pedidoSelected.getMovimento().remove(pedidoSelected.getMovimento().get(0)); 
                         }
                         
+                        
                         JanelaFechaMesa janela = new JanelaFechaMesa(lstMoviFechaMesa, Integer.parseInt(qtdPessoas), pedidoSelected); 
                         
                         janela.setSize(250,300);
@@ -424,6 +439,7 @@ public class JanelaPedidos extends JFrame{
                         janela.setLocationRelativeTo(null); 
                         janela.setVisible(true);  
                         janela.setTitle("Mesa Fechada");
+                        
                         pedidos.remove(pedidoSelected); 
                         lstPedidos.updateUI();
                         lstPedidos.setEnabled(true);
@@ -444,30 +460,30 @@ public class JanelaPedidos extends JFrame{
         txtProduto.setText("");
         txtVlrUnit.setText("");
         txtQuantidade.setText("");
-        txtTotal.setText("");
+        txtTotal.setText("R$ 0,00");
     }
     
     private boolean ValidaCampos(){
         boolean retorno = true;
-        float vTotal = 0;
-        if (txtCodProduto.getText() == ""){
+        
+        if (txtQuantidade.getText().isEmpty()){
             retorno = false;
+            txtQuantidade.grabFocus();
         }
-        if (txtQuantidade.getText() == ""){
+        if (txtVlrUnit.getText().isEmpty()){
             retorno = false;
+            txtVlrUnit.grabFocus();
         }
-        if (txtVlrUnit.getText() == ""){
+        if (txtTotal.getText().isEmpty()){
             retorno = false;
-        }
-        if (txtTotal.getText() == ""){
-            retorno = false;
+            txtQuantidade.grabFocus();
         }
         
-        vTotal = Float.parseFloat(txtQuantidade.getText()) * Float.parseFloat(txtVlrUnit.getText());
-        
-        if (vTotal != Float.parseFloat(txtTotal.getText())){
+        if (txtTotal.getText() == "R$ "){
             retorno = false;
+            txtQuantidade.grabFocus();
         }
+        
         return retorno;
     }   
     

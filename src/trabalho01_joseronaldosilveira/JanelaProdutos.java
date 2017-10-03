@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,15 +29,19 @@ public class JanelaProdutos extends JFrame{
     private final JPanel pnlTexts = new JPanel();
     private JanelaPrincipal p = new JanelaPrincipal();
     
+    ImageIcon IconNovo = new ImageIcon("novo.gif");
+    ImageIcon IconGravar = new ImageIcon("gravar.gif");
+    ImageIcon IconExcluir = new ImageIcon("excluir.gif");
+    
     private final JTextField txtCodProduto = new JTextField(20);
     private final JLabel lblCodProduto = new JLabel("Código");
     private final JTextField txtDescProduto = new JTextField(20);
     private final JLabel lblDescProduto = new JLabel("Descrição");
     private final JTextField txtVlrUnitario = new JTextField(20);
     private final JLabel lblVlrUnitario = new JLabel("Vlr. Unitário");
-    private final JButton btnNovo = new JButton("Novo");
-    private final JButton btnGravar = new JButton("Gravar");
-    private final JButton btnExcluir = new JButton("Excluir");
+    private final JButton btnNovo = new JButton("Novo", IconNovo);
+    private final JButton btnGravar = new JButton("Gravar", IconGravar);
+    private final JButton btnExcluir = new JButton("Excluir", IconExcluir);
     private String vStatus = "";    
     
     
