@@ -1,6 +1,6 @@
 Aluno: José Ronaldo Silveira Miguel - 201176016 - Sistemas de Informação
 
-Descrição do sistema:
+##Descrição do sistema:
 
 O sistema será desenvolvido para que possa controlar o fluxo nas mesas.
 Mesas e produtos deverão ser previamente cadastrados.
