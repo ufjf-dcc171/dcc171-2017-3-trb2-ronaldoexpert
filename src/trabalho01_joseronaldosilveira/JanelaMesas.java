@@ -8,7 +8,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -123,7 +129,12 @@ public class JanelaMesas extends JFrame {
                     txtCodMesa.grabFocus();
                     btnNovo.setEnabled(true);
                     btnGravar.setEnabled(false);
-                    LimpaCampos();                    
+                    LimpaCampos(); 
+                    try {
+                        gravaArquivoTXT(mesas);
+                    } catch (IOException ex) {
+                        Logger.getLogger(JanelaProdutos.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } 
             }else if(e.getSource()==btnExcluir){  
                 if (lstMesas.isSelectionEmpty() == false){ 
@@ -133,7 +144,12 @@ public class JanelaMesas extends JFrame {
                         lstMesas.updateUI();
                         lstMesas.isSelectionEmpty();
                         btnGravar.setEnabled(false); 
-                        LimpaCampos();    
+                        LimpaCampos();
+                        try {
+                        gravaArquivoTXT(mesas);
+                        } catch (IOException ex) {
+                            Logger.getLogger(JanelaProdutos.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }else{
                         JOptionPane.showMessageDialog(null, "A mesa está aberta em um pedido. Não pode ser excluida.");
                     }     
@@ -155,5 +171,22 @@ public class JanelaMesas extends JFrame {
             }
         }    
         return retorno;
+    }
+    
+    private void gravaArquivoTXT(List<Mesas> mesas) throws IOException{
+        int i;
+        
+        File file = new File("mesas.txt");
+        file.delete();
+        
+        FileWriter arq = new FileWriter("mesas.txt");
+        PrintWriter gravarArq = new PrintWriter(arq);
+        
+        for (i=0; i < mesas.size(); i++) {
+          gravarArq.println(
+          mesas.get(i).getCodigo() + "," +  mesas.get(i).getDescricao());
+        }
+
+        arq.close();
     }
 }

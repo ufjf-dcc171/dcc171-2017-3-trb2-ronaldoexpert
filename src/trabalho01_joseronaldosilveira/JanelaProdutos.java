@@ -8,7 +8,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -129,6 +135,11 @@ public class JanelaProdutos extends JFrame{
                     btnNovo.setEnabled(true);
                     btnGravar.setEnabled(false);
                     LimpaCampos();
+                    try {
+                        gravaArquivoTXT(produtos);
+                    } catch (IOException ex) {
+                        Logger.getLogger(JanelaProdutos.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }               
             }else if(e.getSource()==btnExcluir){ 
                 if (lstProdutos.isSelectionEmpty() == false){ 
@@ -138,7 +149,12 @@ public class JanelaProdutos extends JFrame{
                         lstProdutos.updateUI();
                         lstProdutos.isSelectionEmpty();
                         btnGravar.setEnabled(false); 
-                        LimpaCampos();  
+                        LimpaCampos();
+                        try {
+                            gravaArquivoTXT(produtos);
+                        } catch (IOException ex) {
+                            Logger.getLogger(JanelaProdutos.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }else{
                         JOptionPane.showMessageDialog(null, "O produto faz parte de um pedido. Não pode ser excluido.");
                     }
@@ -161,6 +177,23 @@ public class JanelaProdutos extends JFrame{
             }
         }    
         return retorno;
+    }
+    
+    private void gravaArquivoTXT(List<Produtos> produtos) throws IOException{
+        int i;
+        
+        File file = new File("produtos.txt");
+        file.delete();
+        
+        FileWriter arq = new FileWriter("produtos.txt");
+        PrintWriter gravarArq = new PrintWriter(arq);
+        
+        for (i=0; i < produtos.size(); i++) {
+          gravarArq.println(
+          produtos.get(i).getCodigo() + "," +  produtos.get(i).getDescricao() + "," + produtos.get(i).getVlrUunitario());
+        }
+
+        arq.close();
     }
     
     

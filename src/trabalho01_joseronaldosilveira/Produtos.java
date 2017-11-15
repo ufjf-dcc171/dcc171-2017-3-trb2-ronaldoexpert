@@ -1,7 +1,7 @@
 package trabalho01_joseronaldosilveira;
 
 public class Produtos {
-    private int codigo;
+    private Integer codigo;
     private String descricao;
     private float vlrUunitario;
 

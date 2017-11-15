@@ -7,11 +7,17 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -28,17 +34,17 @@ public class JanelaPrincipal extends JFrame{
     private final JPanel painel = new JPanel();
     
     //Cria as mesas
-    private static Mesas m1 = new Mesas(1, "Mesa 001");
+    /*private static Mesas m1 = new Mesas(1, "Mesa 001");
     private static Mesas m2 = new Mesas(2, "Mesa 002");
     private static Mesas m3 = new Mesas(3, "Mesa 003");
     private static Mesas m4 = new Mesas(4, "Mesa 004");
     private static Mesas m5 = new Mesas(5, "Mesa 005");
     
     //Cria os produtos
-    private static Produtos prod1 = new Produtos(1, "Brahma 600ML", 7);
-    private static Produtos prod2 = new Produtos(2, "Heineken 600ML", 10);
-    private static Produtos prod3 = new Produtos(3, "Skol 600ML", 7);
-    private static Produtos prod4 = new Produtos(4, "CocaCola 2lt", 9);
+    //private static Produtos prod1 = new Produtos(1, "Brahma 600ML", 7);
+    //private static Produtos prod2 = new Produtos(2, "Heineken 600ML", 10);
+    //private static Produtos prod3 = new Produtos(3, "Skol 600ML", 7);
+    //private static Produtos prod4 = new Produtos(4, "CocaCola 2lt", 9);
     
     //Cria os pedidos
     private static Pedido pedido01 = new Pedido("00001", "21/09/2017", 70, m1, "Ronaldo");
@@ -46,10 +52,10 @@ public class JanelaPrincipal extends JFrame{
     private static Pedido pedido03 = new Pedido("00003", "23/09/2017", 50, m3, "Ronaldo");
     
     //Cria os Movipedidos
-    private static MoviPedidos movi1 = new MoviPedidos(prod1, 10, 7, 70);    
-    private static MoviPedidos movi2 = new MoviPedidos(prod3, 5, 7, 35);   
-    private static MoviPedidos movi3 = new MoviPedidos(prod2, 5, 10, 50); 
-    
+    //private static MoviPedidos movi1 = new MoviPedidos(prod1, 10, 7, 70);    
+    //private static MoviPedidos movi2 = new MoviPedidos(prod3, 5, 7, 35);   
+    //private static MoviPedidos movi3 = new MoviPedidos(prod2, 5, 10, 50); 
+    */
     private JLabel statusbar = new JLabel("Lab. Prog. III - Prof. Igor Knop - UFJF - 2017");
     
     List<Mesas> mesas = new ArrayList<>();
@@ -63,6 +69,7 @@ public class JanelaPrincipal extends JFrame{
     
     public JanelaPrincipal() throws HeadlessException {
         super("Principal");        
+        /*
         //Adiciona mesas ao novo ArrayList
             mesas.add(m1);
             mesas.add(m2);
@@ -72,10 +79,10 @@ public class JanelaPrincipal extends JFrame{
         //FIM
         
         //Adiciona PRODUTOS ao novo ArrayList
-            produtos.add(prod1);
-            produtos.add(prod2);
-            produtos.add(prod3);
-            produtos.add(prod4);
+        //    produtos.add(prod1);
+        //    produtos.add(prod2);
+        //    produtos.add(prod3);
+        //    produtos.add(prod4);
         //FIM
         
         if (pedidos.size() == 0){
@@ -99,8 +106,9 @@ public class JanelaPrincipal extends JFrame{
             pedidos.get(0).getMovimento().add(movi1);
             pedidos.get(1).getMovimento().add(movi2);
             pedidos.get(2).getMovimento().add(movi3);
-        //FIM */     
-        }
+        //FIM 
+             
+        }*/
         
         painel.setLayout(null);        
         painel.setBackground(Color.WHITE);
@@ -167,77 +175,101 @@ public class JanelaPrincipal extends JFrame{
     
     private class onClickBotao implements ActionListener{
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e){
             if(e.getSource() == btnAbrePedidos){
-                JanelaPedidos janela = new JanelaPedidos(mesas, produtos, pedidos, moviPedidos);
-                janela.setSize(500,700);
-                janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                janela.setIconImage(Toolkit.getDefaultToolkit().getImage("logo2.png"));
-                janela.setLocationRelativeTo(null);
-                janela.setVisible(true);  
-                janela.setTitle("Pedidos");    
+                JanelaPedidos janela;
+                try {
+                    janela = new JanelaPedidos(leMesas(), leProdutos(), pedidos, moviPedidos);
+                    janela.setSize(500,700);
+                    janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    janela.setIconImage(Toolkit.getDefaultToolkit().getImage("logo2.png"));
+                    janela.setLocationRelativeTo(null);
+                    janela.setVisible(true);  
+                    janela.setTitle("Pedidos");
+                } catch (IOException ex) {
+                    Logger.getLogger(JanelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }                    
             
             }else if(e.getSource() == btnCadastroMesa){
-                JanelaMesas janela = new JanelaMesas(mesas, pedidos);
-                janela.setSize(500, 400);
-                janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                janela.setIconImage(Toolkit.getDefaultToolkit().getImage("logo2.png"));
-                janela.setLocationRelativeTo(null);
-                janela.setVisible(true);  
-                janela.setTitle("Cadastro de Mesas");    
+                JanelaMesas janela;
+                try {
+                    janela = new JanelaMesas(leMesas(), pedidos);
+                    janela.setSize(500, 400);
+                    janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    janela.setIconImage(Toolkit.getDefaultToolkit().getImage("logo2.png"));
+                    janela.setLocationRelativeTo(null);
+                    janela.setVisible(true);  
+                    janela.setTitle("Cadastro de Mesas"); 
+                } catch (IOException ex) {
+                    Logger.getLogger(JanelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                   
             
             }else if(e.getSource() == btnCadastroProduto){                
-                JanelaProdutos janela = new JanelaProdutos(produtos, moviPedidos);                
-                janela.setSize(500, 400);
-                janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                janela.setIconImage(Toolkit.getDefaultToolkit().getImage("logo2.png"));
-                janela.setLocationRelativeTo(null);
-                janela.setVisible(true);                  
-                janela.setTitle("Cadastro de Produtos");    
+                JanelaProdutos janela;                
+                try {
+                    janela = new JanelaProdutos(leProdutos(), moviPedidos);
+                    janela.setSize(500, 400);
+                    janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    janela.setIconImage(Toolkit.getDefaultToolkit().getImage("logo2.png"));
+                    janela.setLocationRelativeTo(null);
+                    janela.setVisible(true);                  
+                    janela.setTitle("Cadastro de Produtos"); 
+                } catch (IOException ex) {
+                    Logger.getLogger(JanelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }                   
             }              
         }    
     }
     
+    //Le arquivo .txt de produtos
+    public static ArrayList<Produtos> leProdutos() throws FileNotFoundException, IOException {
+        ArrayList<Produtos> lstProdutos = new ArrayList<>();
+        
+        FileReader arq = new FileReader("produtos.txt");
+        BufferedReader lerArq = new BufferedReader(arq);
+
+        String linha = lerArq.readLine(); // lê a primeira linha
+        // a variável "linha" recebe o valor "null" quando o processo
+        // de repetição atingir o final do arquivo texto
+        while (linha != null) {
+            String[] linhaArquivo = linha.split(",");
+            Integer codigo =  Integer.parseInt(linhaArquivo[0]);
+            String  descricao = linhaArquivo[1];
+            String vlrUnit = linhaArquivo[2];
             
-    /*private static List<Mesas> criaMesas() {
-        List<Mesas> mesas = new ArrayList<>();
-        mesas.add(m1);
-        mesas.add(m2);
-        mesas.add(m3);
-        mesas.add(m4);
-        mesas.add(m5);
-        
-        return mesas;        
+            float vlrUnitProd = Float.parseFloat(vlrUnit);
+            
+            Produtos produto = new Produtos(codigo, descricao, vlrUnitProd);
+            lstProdutos.add(produto);
+            linha = lerArq.readLine(); // lê da segunda até a última linha
+        }
+
+        return lstProdutos;
     }
     
-    private static List<Produtos> criaProdutos() {
-        List<Produtos> prods = new ArrayList<Produtos>();
-        prods.add(prod1);
-        prods.add(prod2);
-        prods.add(prod3);
-        prods.add(prod4);
+    //Le arquivo .txt de mesas
+    public static ArrayList<Mesas> leMesas() throws FileNotFoundException, IOException {
+        ArrayList<Mesas> lstMesas = new ArrayList<>();
         
-        return prods;
+        FileReader arq = new FileReader("mesas.txt");
+        BufferedReader lerArq = new BufferedReader(arq);
+
+        String linha = lerArq.readLine(); // lê a primeira linha
+        // a variável "linha" recebe o valor "null" quando o processo
+        // de repetição atingir o final do arquivo texto
+        while (linha != null) {
+            String[] linhaArquivo = linha.split(",");
+            Integer codigo =  Integer.parseInt(linhaArquivo[0]);
+            String  descricao = linhaArquivo[1];
+            
+            Mesas mesa = new Mesas(codigo, descricao);
+            lstMesas.add(mesa);
+            linha = lerArq.readLine(); // lê da segunda até a última linha
+        }
+
+        return lstMesas;
     }
-    
-    private static List<Pedido> criaPedido() {
-        List<Pedido> pedidos = new ArrayList<Pedido>();
-        pedidos.add(pedido01);
-        pedidos.add(pedido02);
-        pedidos.add(pedido03);     
-        
-        return pedidos;
-    }
-    
-    private static List<MoviPedidos> criaMoviPedido() {
-        List<MoviPedidos> moviPed = new ArrayList<MoviPedidos>();
-        moviPed.add(movi1);
-        moviPed.add(movi2);
-        moviPed.add(movi3);
-        
-        return moviPed;
-    }*/
-    
 }
         
         

@@ -1,7 +1,7 @@
 package trabalho01_joseronaldosilveira;
         
 public class Mesas {
-    private int codigo;
+    private Integer codigo;
     private String descricao;
 
     public Mesas() {
