@@ -1,4 +1,4 @@
-#Aluno: José Ronaldo Silveira Miguel - 201176016 - Sistemas de Informação
+<p>Aluno: José Ronaldo Silveira Miguel - 201176016 - Sistemas de Informação</p>
 
 ##Descrição do sistema:
 
