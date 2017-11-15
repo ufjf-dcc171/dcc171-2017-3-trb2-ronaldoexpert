@@ -1,5 +1,5 @@
 <p><H1>Aluno: José Ronaldo Silveira Miguel - 201176016</p> 
- <p>Sistemas de Informação</h1></p>
+<p>Sistemas de Informação</h1></p>
 
 <p><H2>Descrição do sistema:</h1></p>
 
