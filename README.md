@@ -1,16 +1,10 @@
-<p>Aluno: José Ronaldo Silveira Miguel - 201176016 - Sistemas de Informação</p>
+<p><H1>Aluno: José Ronaldo Silveira Miguel - 201176016 - Sistemas de Informação</h1></p>
 
-##Descrição do sistema:
+<p><H2>Descrição do sistema:</h1></p>
 
-O sistema será desenvolvido para que possa controlar o fluxo nas mesas.
-Mesas e produtos deverão ser previamente cadastrados.
-O atendente irá abrir uma mesa, colocando a data, o nome do responsavel pela mesa assim como 1 produto;
-A mesa poderá ser alterada a qualquer momento, inserindo novos produtos.
-No fechamento da mesa será exibido o total do pedido, assim como o valor dividido, caso o cliente solicite.
-Inicialmente, não será feita a impressão do pedido, somente a vizualização do fechamento na tela.
-
-Iremos utilizar ArrayList para listar os dados. 
-O sistema irá iniciar vazio, fazendo a necessidade de inserir os produtos a cada execução.
-Futuramente poderá ser implementado a persistência de dados.
-Futuramente será implmentado a opção do usuário poder vizualizar as vendas do dia,
-assim como o histórico de vendas por data.
+<p>O sistema será desenvolvido para que possa controlar o fluxo nas mesas de um bar.</p>
+<p>Mesas e produtos deverão ser previamente cadastrados.</p>
+<p>O atendente irá abrir uma mesa, colocando a data, o nome do responsavel pela mesa assim como 1 produto.</p>
+<p>A mesa poderá ser alterada a qualquer momento, inserindo novos produtos.</p>
+<p>No fechamento da mesa será exibido o total do pedido, assim como o valor dividido, caso o cliente solicite.</p>
+<p>Inicialmente, não será feita a impressão do pedido, somente a vizualização do fechamento na tela.</p>
