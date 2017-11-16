@@ -2,6 +2,7 @@ package trabalho01_joseronaldosilveira;
 
 
 public class MoviPedidos {
+    private String numPedido;
     private Produtos codProduto;
     private int quatidade;
     private float vlrUnitario;
@@ -48,6 +49,14 @@ public class MoviPedidos {
     public void setVlrTotal(float vlrTotal) {
         this.vlrTotal = vlrTotal;
     }    
+
+    public String getNumPedido() {
+        return numPedido;
+    }
+
+    public void setNumPedido(String numPedido) {
+        this.numPedido = numPedido;
+    }
     
     @Override
     public String toString() {

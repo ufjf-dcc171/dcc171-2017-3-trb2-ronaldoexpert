@@ -10,6 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -24,6 +28,8 @@ import javax.swing.ListSelectionModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -349,6 +355,13 @@ public class JanelaPedidos extends JFrame{
                 txtResponsavel.setText(""); 
                 txtTotalMesa.setText("R$ 0,00");
                 
+                try {
+                    gravaArquivoTXTPedido(pedidos);
+                    gravaArquivoTXTMoviPedido(pedidos);
+                } catch (IOException ex) {
+                    Logger.getLogger(JanelaPedidos.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
             }else if(e.getSource()==btnCancelar){ 
                 if(vNovoPedido == true){
                     Pedido pedidoSelected = lstPedidos.getSelectedValue();
@@ -375,12 +388,14 @@ public class JanelaPedidos extends JFrame{
                     if (vNovoProduto == false){
                         //Se estiver editando um pedido
                         MoviPedidos moviSelected = lstMoviPedidos.getSelectedValue();
+                        moviSelected.setNumPedido(pedidoSelected.getNumero());
                         moviSelected.setQuatidade(Integer.parseInt(txtQuantidade.getText()));
                         moviSelected.setVlrUnitario(Float.parseFloat(txtVlrUnit.getText()));
                         moviSelected.setVlrTotal(Float.parseFloat(txtQuantidade.getText()) * (Float.parseFloat(txtVlrUnit.getText())));
                     }else{                        
                         vTotal = Float.parseFloat(txtQuantidade.getText()) * (Float.parseFloat(txtVlrUnit.getText()));
                         MoviPedidos mp = new MoviPedidos(lstProdutos.getSelectedValue(), Integer.parseInt(txtQuantidade.getText()), Float.parseFloat(txtVlrUnit.getText()), vTotal);
+                        mp.setNumPedido(pedidoSelected.getNumero());
                         if (vNovoPedido == true){                            
                             lstMovi.add(mp);
                             pedidoSelected.setMovimento(lstMovi);
@@ -449,10 +464,17 @@ public class JanelaPedidos extends JFrame{
                         txtTotalMesa.setText("R$ 0,00"); 
                         txtResponsavel.setText("");
                         lstMoviPedidos.setModel(new DefaultListModel());
+                        
+                        try {
+                            gravaArquivoTXTPedido(pedidos);
+                            gravaArquivoTXTMoviPedido(pedidos);
+                        } catch (IOException ex) {
+                            Logger.getLogger(JanelaPedidos.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
             }                
-        }
+        }   
     }
     
     private void LimpaProdutos(){
@@ -510,5 +532,45 @@ public class JanelaPedidos extends JFrame{
         }
         return vlrTotal;
     }
+    
+    private void gravaArquivoTXTPedido(List<Pedido> lstPedidos) throws IOException{
+        int i;
+        
+        File file = new File("pedidos.txt");
+        file.delete();
+        
+        FileWriter arq = new FileWriter("pedidos.txt");
+        PrintWriter gravarArq = new PrintWriter(arq);
+        
+        
+        for (i=0; i < lstPedidos.size(); i++) {
+            gravarArq.println(
+                lstPedidos.get(i).getNumero() + "," + lstPedidos.get(i).getData() + "," + 
+                lstPedidos.get(i).getTotal()+ "," + lstPedidos.get(i).getIdMesa().getCodigo() + "," + 
+                lstPedidos.get(i).getResponsavel());
+        }
+        arq.close();
+    }
+    
+    private void gravaArquivoTXTMoviPedido(List<Pedido> moviPedidos) throws IOException{
+        int i;
+        
+        File file = new File("moviPedidos.txt");
+        file.delete();
+        
+        FileWriter arq = new FileWriter("moviPedidos.txt");
+        PrintWriter gravarArq = new PrintWriter(arq);
+        
+        
+        for (i=0; i < moviPedidos.size(); i++) {
+            for(int j = 0; j < moviPedidos.get(i).getMovimento().size(); j++){
+                gravarArq.println(
+                    moviPedidos.get(i).getMovimento().get(j).getNumPedido() + "," + moviPedidos.get(i).getMovimento().get(j).getCodProduto().getCodigo() + "," + 
+                    moviPedidos.get(i).getMovimento().get(j).getQuatidade() + "," + moviPedidos.get(i).getMovimento().get(j).getVlrUnitario() + "," + 
+                    moviPedidos.get(i).getMovimento().get(j).getVlrTotal());    
+            }
+        }
+        arq.close();
+    } 
     
 }

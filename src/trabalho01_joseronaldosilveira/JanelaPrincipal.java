@@ -179,8 +179,8 @@ public class JanelaPrincipal extends JFrame{
             if(e.getSource() == btnAbrePedidos){
                 JanelaPedidos janela;
                 try {
-                    janela = new JanelaPedidos(leMesas(), leProdutos(), pedidos, moviPedidos);
-                    janela.setSize(500,700);
+                    janela = new JanelaPedidos(leMesas(), leProdutos(), lePedidos(leMesas(), leMoviPedidos(leProdutos())), leMoviPedidos(leProdutos()));
+                    janela.setSize(580,700);
                     janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     janela.setIconImage(Toolkit.getDefaultToolkit().getImage("logo2.png"));
                     janela.setLocationRelativeTo(null);
@@ -193,7 +193,7 @@ public class JanelaPrincipal extends JFrame{
             }else if(e.getSource() == btnCadastroMesa){
                 JanelaMesas janela;
                 try {
-                    janela = new JanelaMesas(leMesas(), pedidos);
+                    janela = new JanelaMesas(leMesas(), lePedidos(leMesas(), leMoviPedidos(leProdutos())));
                     janela.setSize(500, 400);
                     janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     janela.setIconImage(Toolkit.getDefaultToolkit().getImage("logo2.png"));
@@ -269,6 +269,79 @@ public class JanelaPrincipal extends JFrame{
         }
 
         return lstMesas;
+    }
+    
+    //Le arquivo .txt de pedidos
+    public static ArrayList<Pedido> lePedidos(List<Mesas> mesas, List<MoviPedidos> moviPedidos) throws FileNotFoundException, IOException {
+        ArrayList<Pedido> lstPedido = new ArrayList<>();
+        
+        FileReader arq = new FileReader("pedidos.txt");
+        BufferedReader lerArq = new BufferedReader(arq);
+
+        String linha = lerArq.readLine(); // lê a primeira linha
+        // a variável "linha" recebe o valor "null" quando o processo
+        // de repetição atingir o final do arquivo texto
+        while (linha != null) {
+            String[] linhaArquivo = linha.split(",");
+            String numero =  linhaArquivo[0];
+            String data = linhaArquivo[1];
+            Float total = Float.parseFloat(linhaArquivo[2]);
+            String mesa = linhaArquivo[3];
+            String responsavel = linhaArquivo[4];
+            Mesas mesaPedido = null;
+            
+            for (int i = 0; i < mesas.size(); i++) {
+                if (mesas.get(i).getCodigo() == Integer.parseInt(mesa)){
+                    mesaPedido = mesas.get(i);
+                }                
+            }
+            
+            Pedido pedido = new Pedido(numero, data, total, mesaPedido, responsavel);
+            lstPedido.add(pedido);
+            
+            for(int j = 0; j < moviPedidos.size(); j++ ){
+                if (moviPedidos.get(j).getNumPedido().equals(numero)){
+                    pedido.getMovimento().add(moviPedidos.get(j));
+                }
+            }
+            
+            linha = lerArq.readLine(); // lê da segunda até a última linha
+        }
+        return lstPedido;
+    }
+    
+    //Le arquivo .txt de MOVI_PEDIDOS
+    public static ArrayList<MoviPedidos> leMoviPedidos(List<Produtos> produtos) throws FileNotFoundException, IOException {
+        ArrayList<MoviPedidos> lstMoviPedido = new ArrayList<>();
+        
+        FileReader arq = new FileReader("moviPedidos.txt");
+        BufferedReader lerArq = new BufferedReader(arq);
+
+        String linha = lerArq.readLine(); // lê a primeira linha
+        // a variável "linha" recebe o valor "null" quando o processo
+        // de repetição atingir o final do arquivo texto
+        while (linha != null) {
+            String[] linhaArquivo = linha.split(",");
+            String numPedido =  linhaArquivo[0];
+            String codProduto =  linhaArquivo[1];
+            Integer quantidade = Integer.parseInt(linhaArquivo[2]);
+            Float vlrUnitario = Float.parseFloat(linhaArquivo[3]);
+            Float vlrTotal = Float.parseFloat(linhaArquivo[4]);
+            Produtos produtoPedido = null;
+            
+            for (int i = 0; i < produtos.size(); i++) {
+                if (produtos.get(i).getCodigo() == Integer.parseInt(codProduto)){
+                    produtoPedido = produtos.get(i);
+                }                
+            }
+            
+            MoviPedidos moviPedido = new MoviPedidos(produtoPedido, quantidade, vlrUnitario, vlrTotal);
+            moviPedido.setNumPedido(numPedido);
+            lstMoviPedido.add(moviPedido);
+            
+            linha = lerArq.readLine(); // lê da segunda até a última linha
+        }
+        return lstMoviPedido;
     }
 }
         
