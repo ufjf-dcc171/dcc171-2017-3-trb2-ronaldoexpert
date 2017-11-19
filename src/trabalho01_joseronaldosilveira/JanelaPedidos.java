@@ -322,7 +322,7 @@ public class JanelaPedidos extends JFrame{
                 }   
     		
                 p.setData(txtData.getText());
-                p.setNumero(idPedido); 
+                p.setNumero(validaNumero(idPedido)); 
                 p.setResponsavel(txtResponsavel.getText());
                 p.setTotal(0);
                 pedidos.add(p);
@@ -371,6 +371,7 @@ public class JanelaPedidos extends JFrame{
                     lstPedidos.updateUI();
                     lstPedidos.setEnabled(true);
                     btnGravar.setEnabled(false);
+                    cboMesas.setEnabled(true);
                 }
                 LimpaProdutos();
                 btnNovo.setEnabled(true);
@@ -388,14 +389,14 @@ public class JanelaPedidos extends JFrame{
                     if (vNovoProduto == false){
                         //Se estiver editando um pedido
                         MoviPedidos moviSelected = lstMoviPedidos.getSelectedValue();
-                        moviSelected.setNumPedido(pedidoSelected.getNumero());
+                        moviSelected.setNumPedido(validaNumero(pedidoSelected.getNumero()));
                         moviSelected.setQuatidade(Integer.parseInt(txtQuantidade.getText()));
                         moviSelected.setVlrUnitario(Float.parseFloat(txtVlrUnit.getText()));
                         moviSelected.setVlrTotal(Float.parseFloat(txtQuantidade.getText()) * (Float.parseFloat(txtVlrUnit.getText())));
                     }else{                        
                         vTotal = Float.parseFloat(txtQuantidade.getText()) * (Float.parseFloat(txtVlrUnit.getText()));
                         MoviPedidos mp = new MoviPedidos(lstProdutos.getSelectedValue(), Integer.parseInt(txtQuantidade.getText()), Float.parseFloat(txtVlrUnit.getText()), vTotal);
-                        mp.setNumPedido(pedidoSelected.getNumero());
+                        mp.setNumPedido(validaNumero(pedidoSelected.getNumero()));
                         if (vNovoPedido == true){                            
                             lstMovi.add(mp);
                             pedidoSelected.setMovimento(lstMovi);
@@ -572,5 +573,30 @@ public class JanelaPedidos extends JFrame{
         }
         arq.close();
     } 
+    
+    private String validaNumero(String num){
+        String resultado = "";
+        switch (num.length()) {
+            case 1:
+                resultado = "0000" + num;
+                break;
+            case 2:
+                resultado = "000" + num;
+                break;
+            case 3:
+                resultado = "00" + num;
+                break;
+            case 4:
+                resultado = "0" + num;
+                break;
+            case 5:
+                resultado = num;
+                break;
+            default:
+                break;
+        }
+        
+        return resultado;
+    }
     
 }
